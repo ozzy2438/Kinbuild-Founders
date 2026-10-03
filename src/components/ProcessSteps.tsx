@@ -5,7 +5,7 @@ const steps = [
   { number: '01', title: 'Meet', copy: 'Meet people in Melbourne who are ready to start something and contribute.' },
   { number: '02', title: 'Match', copy: 'Find complementary skills, shared interests and working styles that fit.' },
   { number: '03', title: 'Build', copy: 'Spend 14 days on one small goal. Talk to potential customers, make something simple, see how you work together.' },
-  { number: '04', title: 'Decide', copy: 'Decide on the evidence: keep building, change direction or part ways. A shared venture starts with a shared decision.' },
+  { number: '04', title: 'Decide', copy: 'Review the evidence with experienced people. Then continue, pivot or pause, and agree the next step together.' },
 ]
 
 /** The gateway assembles one piece per step: block, column, beam, then a finished arch. */

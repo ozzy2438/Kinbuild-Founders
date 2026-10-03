@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
-import { ArrowRightIcon, ArrowUpRightIcon, CheckIcon, CaretDownIcon, EnvelopeSimpleIcon, LinkedinLogoIcon, LinkSimpleIcon, PuzzlePieceIcon, ShareNetworkIcon, WhatsappLogoIcon } from '@phosphor-icons/react'
+import { ArrowRightIcon, ArrowUpRightIcon, CheckIcon, CaretDownIcon, EnvelopeSimpleIcon, LinkSimpleIcon, PuzzlePieceIcon, ShareNetworkIcon } from '@phosphor-icons/react'
 import { registration } from '../registration'
 import { availability, seekingOptions, weeklyHours, workingStyles } from '../content/roles'
 import type { Preset } from '../content/roles'
@@ -182,13 +182,11 @@ function Invite() {
   }
 
   return <div className="invite">
-    <h4>Know someone who’d complete the arch?</h4>
-    <p>Invite one person you’d like to build with. Different strengths make the strongest teams.</p>
+    <h4>Know someone who should be in the room?</h4>
+    <p>If they’d bring something different to the table, pass this on. We talk to everyone before any invitation.</p>
     <div className="invite__actions">
       {canShare && <button type="button" className="invite__primary" onClick={() => void share()}><ShareNetworkIcon size={17} aria-hidden="true" />Share</button>}
       <button type="button" onClick={() => void copy()}><LinkSimpleIcon size={17} aria-hidden="true" />Copy link</button>
-      <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`} target="_blank" rel="noopener noreferrer"><LinkedinLogoIcon size={17} aria-hidden="true" />LinkedIn<span className="visually-hidden"> (opens in a new tab)</span></a>
-      <a href={`https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`} target="_blank" rel="noopener noreferrer"><WhatsappLogoIcon size={17} aria-hidden="true" />WhatsApp<span className="visually-hidden"> (opens in a new tab)</span></a>
       <a href={`mailto:?subject=${encodeURIComponent('Want to build something together?')}&body=${encodeURIComponent(`${text}\n\n${url}`)}`}><EnvelopeSimpleIcon size={17} aria-hidden="true" />Email</a>
     </div>
     <p className="invite__status" aria-live="polite">{status}</p>

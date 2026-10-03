@@ -6,7 +6,6 @@ import InterestForm from './components/InterestForm'
 import PieceFinder from './components/PieceFinder'
 import ProcessSteps from './components/ProcessSteps'
 import Organiser from './components/Organiser'
-import CommunityPulse from './components/CommunityPulse'
 import { registration } from './registration'
 import { roles, roleFor } from './content/roles'
 import type { Preset, RoleId } from './content/roles'
@@ -17,8 +16,8 @@ const questions = [
   ['Is this just another networking event?', 'No. It goes beyond introductions. The pilot is designed around complementary skills and a short, practical working experience, so you learn what collaboration actually feels like.'],
   ['What do you mean by working style?', 'Some people enjoy taking the lead, some want to stay hands-on, and others do their best work supporting a team. We want to understand how you like to contribute alongside your skills and interests. These are preferences to discuss, not fixed personality labels.'],
   ['Do we have to start a company together?', 'No. The point is to find out whether there is a good fit before making a commitment. You can decide to continue, explore another direction, or simply take what you learned.'],
-  ['How much time does it take?', 'Plan for 4–6 hours a week during the 14-day trial, alongside work or study. You don’t need to quit anything. We’ll talk about your availability before any invitation.'],
-  ['Will StartBeside connect us with investors?', 'Not as part of the pilot. StartBeside doesn’t promise funding or investor introductions. The pilot helps you find out whether you have a team and a problem worth continuing with. For many teams the next step is customers, not capital.'],
+  ['How much time does it take?', 'For the first pilot, plan for 4–6 hours a week during the 14-day trial, alongside work or study. You don’t need to quit anything. Teams that choose to go further can take on more later. We’ll talk about your availability before any invitation.'],
+  ['Will StartBeside connect us with investors?', 'StartBeside isn’t an investment fund or an investor-matching service, and the pilot doesn’t promise funding or introductions. The first goal is to find out whether you have a strong team and a real problem. For the right teams, investment is one later option among several: some go to an accelerator or angel investors, some bootstrap, some grow from customers.'],
   ['Does StartBeside take a share of what we build?', 'No. StartBeside takes no equity. If a team decides to go further, ownership and legal questions are theirs to work out properly, in their own time, not on the first evening.'],
   ['When and where is the pilot?', 'We’re shaping the first pilot in Melbourne. The date, venue, group size and any participation cost will be shared before anyone is asked to commit.'],
   ['What happens after I register interest?', `${registration.enabled ? 'We’ll review your details.' : 'When registration opens, we’ll review your details.'} If there’s a potential fit, we’ll contact you for a short conversation about your interests, availability and contribution. An invitation to a suitable pilot comes separately. Registering interest does not guarantee a place.${registration.enabled ? '' : ' This website currently lets you preview the form; it does not send or save your details.'}`],
@@ -61,7 +60,7 @@ function App() {
           <p className="eyebrow hero__eyebrow">MELBOURNE · FOUNDING PILOT</p>
           <h1 id="hero-title"><span>Don’t build</span><span>alone<span className="accent-dot">.</span></span></h1>
           <p className="hero__lead">Meet people in Melbourne. Test a startup idea together. See if you’re a team.</p>
-          <p className="hero__description">A Melbourne pilot for future co-founders, designed to fit around work or study.</p>
+          <p className="hero__description">A Melbourne pilot for future co-founders. Start alongside work or study; go further when the evidence says so.</p>
           <p className="hero__match"><UsersThreeIcon size={25} weight="light" aria-hidden="true" /><span>Matched by skills, sector and how you like to work.</span></p>
           <div className="hero__actions"><a href="#register" className="button">Register your interest <ArrowUpRightIcon size={19} /></a><a href="#how-it-works" className="quiet-link">See how it works <ArrowDownIcon size={16} /></a></div>
           <p className="pilot-note">We’re shaping the first Melbourne pilot.<br />Dates and venue will be announced.</p>
@@ -80,7 +79,7 @@ function App() {
       <section id="how-it-works" className="process shell" aria-labelledby="process-title">
         <div className="section-intro"><p className="eyebrow">HOW IT WORKS</p><h2 id="process-title">Meeting someone is easy.<br />Knowing you can build together takes more.</h2></div>
         <ProcessSteps />
-        <div className="next-chapter"><p className="eyebrow">AFTER 14 DAYS</p><div><h3>A real team. A tested idea.<br className="mobile-only" /> A clear next step.</h3><p>Sometimes that means building on together. Sometimes it means learning the team or the idea isn’t right, which is worth knowing too.</p></div></div>
+        <div className="next-chapter"><p className="eyebrow">AFTER 14 DAYS</p><div><h3>A real team. A tested idea.<br className="mobile-only" /> A clear next step.</h3><p>You review the evidence with experienced people, then decide: continue, pivot or pause. Strong teams can go on to a longer venture sprint. The next step might be customers, a product, revenue, an accelerator or investment, whatever the evidence points to.</p></div></div>
       </section>
 
       <section id="the-pilot" className="pilot" aria-labelledby="pilot-title">
@@ -91,9 +90,9 @@ function App() {
             <dl className="pilot-overview__details">
               <div><dt>Who it’s for</dt><dd>12–18 people who want to try building something and can bring a skill, an idea or industry experience. No finished idea required.</dd></div>
               <div><dt>Where we’ll meet</dt><dd>Melbourne, starting with an in-person introduction.</dd></div>
-              <div><dt>What we’re planning</dt><dd>An in-person evening and mutual choice of who to work with. Then a 14-day trial on one small goal, such as a few customer conversations and a simple prototype, with a check-in on day 7.</dd></div>
+              <div><dt>What we’re planning</dt><dd>An in-person evening and mutual choice of who to work with. Then a 14-day trial on one small goal, such as a few customer conversations and a simple prototype, with a check-in on day 7 and an evidence review on day 14.</dd></div>
               <div><dt>What you’ll bring</dt><dd>4–6 hours a week, a contribution to the shared goal and a willingness to follow through. We’ll discuss availability before any invitation.</dd></div>
-              <div><dt>What you’ll leave with</dt><dd>Evidence on three questions: can we work together, is the problem real, should we keep going? Finding out early that something isn’t right is a good outcome too.</dd></div>
+              <div><dt>What you’ll leave with</dt><dd>Evidence on four questions: can we work together, is the problem real, is it worth continuing, and if so, what’s the most sensible next step? Finding out early that something isn’t right is a good outcome too.</dd></div>
             </dl>
             <ul className="pilot-boundaries" aria-label="Pilot boundaries"><li>Keep your job or studies</li><li>No company required</li><li>No equity taken</li><li>No funding promised</li></ul>
             <p className="pilot-overview__note">The date, venue and any cost will be confirmed before you’re asked to commit.</p>
@@ -125,7 +124,6 @@ function App() {
               </ol>
               <p className="registration-next__note">Registering interest does not guarantee a place. You choose whether to accept an invitation.</p>
             </div>
-            <CommunityPulse />
           </div>
           <InterestForm onPrivacy={() => setPrivacyOpen(true)} preset={preset} />
         </div>
@@ -140,7 +138,6 @@ function App() {
         <div>
           {registration.enabled ? <>
             <p>StartBeside uses your name, email, sector, main skill, who you’d like to meet, how you like to work, the time you could give and when suits you to plan the Melbourne pilot, review potential fit and contact you about your interest. Submissions are stored with Netlify and reviewed by the organiser. They are not published or shared with other participants, mentors or investors without your permission.</p>
-            <p>Once enough people have registered, the site may show anonymous totals, such as how many people bring each broad strength. Names, emails and individual answers are never shown.</p>
             <p>To ask about your information, request a correction or have it deleted, contact <a href={`mailto:${registration.contactEmail}`}>{registration.contactEmail}</a>. You can also ask us to stop contacting you.</p>
             <p>There are no analytics or advertising trackers. Fonts and images are served with the site.</p>
           </> : <>

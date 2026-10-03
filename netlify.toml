@@ -16,6 +16,3 @@
 
 [context.branch-deploy.environment]
   VITE_REGISTRATION_MODE = "preview"
-
-[functions]
-  directory = "netlify/functions"

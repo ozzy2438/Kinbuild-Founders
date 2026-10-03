@@ -8,7 +8,7 @@ import type { RoleId } from '../content/roles'
 // Literal paths so the standalone build can inline them.
 const sources = { left: '/images/arch-left.webp', right: '/images/arch-right.webp', top: '/images/arch-top.webp' }
 const pieceSource = (piece: keyof typeof sources) => sources[piece]
-const list = (items: string[]) => items.length > 1 ? `${items.slice(0, -1).join(', ')} and ${items.at(-1)}` : items[0]
+const list = (items: string[]) => items.length > 1 ? `${items.slice(0, -1).join(', ')} or ${items.at(-1)}` : items[0]
 
 export default function PieceFinder({ onComplete }: { onComplete: (role: RoleId) => void }) {
   const [chosen, setChosen] = useState<RoleId | null>(null)
@@ -29,8 +29,8 @@ export default function PieceFinder({ onComplete }: { onComplete: (role: RoleId)
   return <section id="your-piece" className="finder shell" aria-labelledby="finder-title">
     <div className="finder__copy">
       <p className="eyebrow eyebrow--accent">FIND YOUR MISSING PIECE</p>
-      <h2 id="finder-title" tabIndex={-1}>You’re one piece.<br />An arch needs three.</h2>
-      <p className="finder__lead">Pick what you bring. We’ll show you who you’d be looking for.</p>
+      <h2 id="finder-title" tabIndex={-1}>Every team starts<br />with different pieces.</h2>
+      <p className="finder__lead">Pick what you bring. We’ll show you the strengths that could complete it.</p>
 
       <fieldset className="finder__choices">
         <legend className="visually-hidden">What do you bring?</legend>
@@ -43,11 +43,11 @@ export default function PieceFinder({ onComplete }: { onComplete: (role: RoleId)
       </fieldset>
 
       <div className="finder__result" aria-live="polite">
-        {chosen ? <p><span>You bring the {roleFor(chosen).label.toLowerCase()}.</span> To stand, you need {list(missing.map(role => role.seeking))}.</p>
-          : <p className="finder__hint">Every startup needs something built, something shaped and someone to grow it.</p>}
+        {chosen ? <p><span>{roleFor(chosen).brings}</span> Look for {list(missing.map(role => role.seeking))}. A team of two can work too.</p>
+          : <p className="finder__hint">Most startups need something built, something designed and someone to grow it.</p>}
       </div>
       <div className="finder__actions">
-        <button className="button" type="button" onClick={finish} disabled={!chosen} aria-describedby="finder-action-note">Find my missing pieces <ArrowUpRightIcon size={19} /></button>
+        <button className="button" type="button" onClick={finish} disabled={!chosen} aria-describedby="finder-action-note">Register with my piece <ArrowUpRightIcon size={19} /></button>
         <p id="finder-action-note">{chosen ? 'We’ll fill in the form with your choice.' : 'Choose a piece first.'}</p>
       </div>
     </div>
@@ -62,11 +62,11 @@ export default function PieceFinder({ onComplete }: { onComplete: (role: RoleId)
               <img src={pieceSource(role.piece)} alt="" width="1000" height="1000" loading="lazy" decoding="async" draggable="false" />
               <span className="finder-piece__tint" style={{ '--piece': `url(${pieceSource(role.piece)})` } as CSSProperties} />
             </div>
-            <span className="finder-piece__label">{mine ? <><b>You</b> · {role.label}</> : chosen && !complete ? <><b>Missing</b> · {role.label}</> : role.label}</span>
+            <span className="finder-piece__label">{mine ? <><b>You</b> · {role.label}</> : chosen && !complete ? <><b>Wanted</b> · {role.label}</> : role.label}</span>
           </div>
         </div>
       })}
-      <p className="finder__caption">{complete ? 'That’s a team.' : chosen ? 'Two pieces to find.' : 'Three strengths. One shared direction.'}</p>
+      <p className="finder__caption">{complete ? 'That’s a team.' : chosen ? 'Pieces that could complete it.' : 'Different strengths. One shared direction.'}</p>
     </div>
   </section>
 }

@@ -2,25 +2,13 @@
 export type RoleId = 'build' | 'design' | 'grow'
 export type Piece = 'left' | 'right' | 'top'
 
-export const roles: { id: RoleId; piece: Piece; label: string; verb: string; seeking: string; covers: string; skill: string }[] = [
-  { id: 'build', piece: 'left', label: 'Build', verb: 'I build', seeking: 'someone who builds', covers: 'Engineering, data, the product itself', skill: 'Engineering & development' },
-  { id: 'design', piece: 'right', label: 'Design', verb: 'I design', seeking: 'someone who designs', covers: 'Product, design, the experience', skill: 'Design & user experience' },
-  { id: 'grow', piece: 'top', label: 'Grow', verb: 'I grow', seeking: 'someone who grows it', covers: 'Marketing, sales, operations, industry know-how', skill: 'Marketing & growth' },
+export const roles: { id: RoleId; piece: Piece; label: string; verb: string; brings: string; seeking: string; covers: string; skill: string }[] = [
+  { id: 'build', piece: 'left', label: 'Build', verb: 'I build', brings: 'You bring the build.', seeking: 'someone who builds', covers: 'Engineering, data, the product itself', skill: 'Engineering & development' },
+  { id: 'design', piece: 'right', label: 'Design', verb: 'I design', brings: 'You bring the design.', seeking: 'someone who designs', covers: 'Product, design, the experience', skill: 'Design & user experience' },
+  { id: 'grow', piece: 'top', label: 'Grow', verb: 'I grow', brings: 'You bring the growth.', seeking: 'someone who grows it', covers: 'Marketing, sales, operations, industry know-how', skill: 'Marketing & growth' },
 ]
 
 export const roleFor = (id: RoleId) => roles.find(role => role.id === id)!
-
-/** Form skills grouped by role, used for matching and anonymous community totals. */
-export const skillRole: Record<string, RoleId | undefined> = {
-  'Engineering & development': 'build',
-  'Research & data': 'build',
-  'Design & user experience': 'design',
-  'Product & strategy': 'design',
-  'Marketing & growth': 'grow',
-  'Sales & partnerships': 'grow',
-  'Operations & finance': 'grow',
-  'Industry expertise': 'grow',
-}
 
 export const seekingOptions = [
   { value: 'Build', label: 'Someone who builds', hint: 'Engineering, data' },
