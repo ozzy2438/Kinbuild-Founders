@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useEntrance } from '../hooks/useEntrance'
 
@@ -20,8 +21,26 @@ function StepArch({ pieces, done }: { pieces: number; done: boolean }) {
 
 export default function ProcessSteps() {
   const { ref, entered } = useEntrance<HTMLOListElement>()
+  const [arrived, setArrived] = useState<number[]>([])
+
+  // Stacked on phones, each card turns in when it is reached rather than all at once.
+  useEffect(() => {
+    const list = ref.current
+    if (!list) return
+    const items = [...list.children] as HTMLElement[]
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setArrived(items.map((_, i) => i)); return }
+    const observer = new IntersectionObserver(entries => {
+      const reached = entries.filter(entry => entry.isIntersecting).map(entry => items.indexOf(entry.target as HTMLElement))
+      if (!reached.length) return
+      reached.forEach(i => observer.unobserve(items[i]))
+      setArrived(current => [...new Set([...current, ...reached])])
+    }, { threshold: .35 })
+    items.forEach(item => observer.observe(item))
+    return () => observer.disconnect()
+  }, [ref])
+
   return <ol ref={ref} className={`process__steps ${entered ? 'is-live' : ''}`}>
-    {steps.map((step, index) => <li key={step.number} style={{ '--step': index } as CSSProperties}>
+    {steps.map((step, index) => <li key={step.number} className={arrived.includes(index) ? 'is-in' : undefined} style={{ '--step': index } as CSSProperties}>
       <span className="step-number">{step.number}</span>
       <StepArch pieces={Math.min(index + 1, 3)} done={index === 3} />
       <h3>{step.title}</h3>

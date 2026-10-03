@@ -4,6 +4,8 @@ import { useEntrance } from '../hooks/useEntrance'
 import { roles } from '../content/roles'
 
 const source = '/images/startbeside-arch.webp'
+// The three real cut-out stones (same canvas as the gateway), literal for the standalone build.
+const stones = { left: '/images/arch-left.webp', right: '/images/arch-right.webp', top: '/images/arch-top.webp' }
 const short = { left: 'Engineering & data', right: 'Product & design', top: 'Growth & sales' }
 
 export function Artwork({ cinematic = false, entrance = false, labels = false }: { cinematic?: boolean; entrance?: boolean; labels?: boolean }) {
@@ -26,8 +28,10 @@ export function Artwork({ cinematic = false, entrance = false, labels = false }:
 
   return <div ref={arrival.ref} className={`artwork ${cinematic ? 'artwork--cinematic' : ''} ${entrance ? (arrival.entered ? 'artwork--entrance' : 'artwork--waiting') : ''}`} onPointerMove={move} onPointerLeave={reset}>
     <div className="artwork__perspective" ref={ref}>
-      <img className="artwork__whole" src={source} alt={cinematic ? '' : 'Three different stone pieces come together to form one architectural gateway.'} width="1254" height="1254" fetchPriority={cinematic ? 'auto' : 'high'} draggable="false" />
+      <div className="artwork__assembled"><img className="artwork__whole" src={source} alt={cinematic ? '' : 'Three different stone pieces come together to form one architectural gateway.'} width="1254" height="1254" fetchPriority={cinematic ? 'auto' : 'high'} draggable="false" /></div>
       {(entrance || cinematic) && ['left', 'right', 'top'].map((piece, i) => <img key={piece} className={`artwork__piece artwork__piece--${piece}`} src={source} alt="" aria-hidden="true" width="1254" height="1254" draggable="false" style={{ '--piece-index': i } as CSSProperties} />)}
+      {/* Scrolling down eases the three stones apart in 3D; scrolling up joins them again. */}
+      {entrance && <div className="artwork__open" aria-hidden="true">{(['left', 'right', 'top'] as const).map(piece => <img key={piece} className={`artwork__open-piece artwork__open-piece--${piece}`} src={stones[piece]} alt="" width="1000" height="1000" loading="lazy" decoding="async" draggable="false" />)}</div>}
       {labels && <div className="artwork__labels" aria-hidden="true">
         {roles.map(role => <span key={role.piece} className={`artwork__hit artwork__hit--${role.piece}`} onPointerEnter={() => { if (arrival.ref.current) arrival.ref.current.dataset.hover = role.piece }} onPointerLeave={() => { if (arrival.ref.current) delete arrival.ref.current.dataset.hover }} />)}
         {roles.map(role => <span key={role.piece} className={`artwork__label artwork__label--${role.piece}`}><i /><b>{role.label}</b><small>{short[role.piece]}</small></span>)}

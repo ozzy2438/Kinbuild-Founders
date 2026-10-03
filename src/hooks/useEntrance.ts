@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 /** Reveal once on arrival, including artwork below the fold on small screens. */
-export function useEntrance<T extends HTMLElement>() {
+export function useEntrance<T extends HTMLElement>(threshold = .12) {
   const ref = useRef<T>(null)
   const [entered, setEntered] = useState(false)
 
@@ -18,14 +18,14 @@ export function useEntrance<T extends HTMLElement>() {
         setEntered(true)
         observer.disconnect()
       }
-    }, { threshold: .12 })
+    }, { threshold })
     const reduce = () => {
       if (preference.matches) { setEntered(true); observer.disconnect() }
     }
     observer.observe(element)
     preference.addEventListener('change', reduce)
     return () => { observer.disconnect(); preference.removeEventListener('change', reduce) }
-  }, [])
+  }, [threshold])
 
   return { ref, entered }
 }

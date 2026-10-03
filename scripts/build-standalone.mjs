@@ -23,6 +23,7 @@ await build({
 const files = [
   ['/images/startbeside-arch.webp', 'image/webp'],
   ['/media/startbeside-film.mp4', 'video/mp4'],
+  ['/media/startbeside-loop.mp4', 'video/mp4'],
   ['/media/startbeside-poster.webp', 'image/webp'],
   ['/media/startbeside-team.webp', 'image/webp'],
   ['/images/startbeside-toy-gateway.webp', 'image/webp'],
