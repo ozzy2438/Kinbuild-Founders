@@ -102,6 +102,14 @@ export default function StoryDialog({ open, onClose }: { open: boolean; onClose:
     })
   }
 
+  const goToFinder = () => {
+    close()
+    requestAnimationFrame(() => {
+      document.getElementById('your-piece')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+      document.getElementById('finder-title')?.focus({ preventScroll: true })
+    })
+  }
+
   return <dialog ref={dialog} className={`film-dialog ${expanded ? 'is-expanded' : ''}`} aria-labelledby="film-title" onCancel={close} onClick={event => { if (event.target === event.currentTarget) close() }}>
     <div className={`film-window ${paused ? 'is-paused' : 'is-playing'}`} ref={windowRef}>
       <header className="film-window__bar">
@@ -123,6 +131,15 @@ export default function StoryDialog({ open, onClose }: { open: boolean; onClose:
           {captionUrl && <track key={captionUrl} kind="captions" srcLang="en" label="English" src={captionUrl} default />}
         </video>
         {!started && !error && <button className="film-start" onClick={play}><span><PlayIcon size={28} weight="fill" /></span>Play with sound</button>}
+        {finished && !error && <div className="film-end">
+          <img src="/images/startbeside-arch.webp" alt="" width="1254" height="1254" />
+          <div>
+            <p className="eyebrow eyebrow--accent">YOUR TURN</p>
+            <h3>Every gateway starts with one piece.</h3>
+            <p>Find yours, then find the people who complete it.</p>
+            <div className="film-end__actions"><button className="button" onClick={goToFinder}>Find my missing piece <ArrowUpRightIcon size={18} /></button><button className="text-button" onClick={play}><ArrowCounterClockwiseIcon size={17} /> Watch again</button></div>
+          </div>
+        </div>}
         {error && <div className="film-message" role="alert"><p>The film couldn’t load.</p><button className="button button--light" onClick={() => { setError(false); player.current?.load(); void player.current?.play().catch(() => setPaused(true)) }}>Try again</button><span>The full transcript is below.</span></div>}
       </div>
       <div className="film-controls">
@@ -141,7 +158,7 @@ export default function StoryDialog({ open, onClose }: { open: boolean; onClose:
         <p id="film-description"><span className="eyebrow">A SHARED BEGINNING</span><span>From a first idea to a shared venture.</span></p>
         <button className="text-button" onClick={goToForm}>Find your people <ArrowUpRightIcon size={19} /></button>
       </footer>
-      <details className="film-transcript"><summary>Read the transcript <span>English narration</span></summary><p>Great ideas don't grow alone. They grow with people who see things differently. At StartBeside, find your people, and turn that first idea into a real startup. Start small, build together, and see how far you can go. StartBeside. Don't build alone.</p><p>Pilot note: Investor readiness is a longer-term ambition. No promise of funding.</p></details>
+      <details className="film-transcript"><summary>Read the transcript <span>English narration</span></summary><p>Great ideas don't grow alone. They grow with people who see things differently. At StartBeside, find your people, and turn that first idea into a real startup. Start small, build together, and see how far you can go. StartBeside. Don't build alone.</p><p>Pilot note: StartBeside takes no equity and does not promise funding or investor introductions.</p></details>
     </div>
   </dialog>
 }

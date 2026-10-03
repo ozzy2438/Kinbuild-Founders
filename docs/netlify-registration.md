@@ -34,6 +34,10 @@ These settings are public, compiled into the website, and require rebuilding aft
 
 The organiser has chosen a project-focused site: no personal name, portrait or biography is required. The About section explains StartBeside’s purpose and planned pilot. A LinkedIn link is optional. The public contact email can be a project address; a custom domain is not required. Dates, venue, time commitment, group size and cost remain unconfirmed and are described that way on the page.
 
+## New form fields
+
+The form now also sends `looking_for` (Build, Design, Grow or Open, comma-separated), `working_style`, `weekly_hours` and `availability` (optional, comma-separated). All are declared in the hidden detection form in `index.html`. Netlify only learns new fields at the next deploy with form detection on, so redeploy once after this change and check that the new columns appear.
+
 ## Cost and manual publishing notes
 
 The current credit-based Free plan has 300 monthly credits and a hard usage limit, with no automatic recharge option. Production deployments consume 15 credits, bandwidth 20 credits per GB, and requests 2 credits per 10,000 requests. Forms are free and unlimited on credit-based plans; older legacy accounts have different terms. These are published plan terms, not a verified view of the organiser’s billing account. The site uses no Netlify AI features or functions. Use the included `netlify.app` address for now.

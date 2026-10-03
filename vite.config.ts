@@ -10,8 +10,10 @@ export default defineConfig(({ mode }) => {
   if (registrationMode === 'netlify' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((env.VITE_CONTACT_EMAIL || '').trim())) {
     throw new Error('Set a public VITE_CONTACT_EMAIL before enabling Netlify registration.')
   }
+  // Link previews need absolute image URLs. Netlify sets URL during builds.
+  const siteUrl = (env.VITE_SITE_URL || process.env.URL || '').trim().replace(/\/+$/, '')
   return {
-    plugins: [react()],
+    plugins: [react(), { name: 'site-url', transformIndexHtml: html => html.replaceAll('__SITE_URL__', siteUrl) }],
     server: { host: '0.0.0.0', allowedHosts: ['terminal.local'] },
   }
 })

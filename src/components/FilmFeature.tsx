@@ -1,4 +1,4 @@
-import { ArrowDownIcon, PlayIcon, SpeakerHighIcon, FilmStripIcon } from '@phosphor-icons/react'
+import { ArrowDownIcon, ArrowsLeftRightIcon, PlayIcon, SpeakerHighIcon, FilmStripIcon } from '@phosphor-icons/react'
 import { useEntrance } from '../hooks/useEntrance'
 
 export default function FilmFeature({ onPlay }: { onPlay: () => void }) {
@@ -28,6 +28,12 @@ export default function FilmFeature({ onPlay }: { onPlay: () => void }) {
           <span id="film-feature-note"><SpeakerHighIcon size={16} aria-hidden="true" /> Sound on when you press play.</span>
         </div>
       </div>
+    </div>
+
+    <div className="film-bridge">
+      <figure><img src="/images/startbeside-toy-gateway.webp" width="1000" height="900" loading="lazy" decoding="async" alt="The film’s final scene: toy founders at a table beneath a gateway built from three toy pieces." /><figcaption><span>IN THE FILM</span><strong>Three toy founders build a gateway.</strong></figcaption></figure>
+      <p className="film-bridge__join"><ArrowsLeftRightIcon size={22} aria-hidden="true" />Same shape</p>
+      <figure><img src="/images/startbeside-arch.webp" width="1254" height="1254" loading="lazy" decoding="async" alt="The StartBeside stone gateway made of three different pieces." /><figcaption><span>IN MELBOURNE</span><strong>Real people. Different strengths.</strong></figcaption></figure>
     </div>
 
     <div className="film-feature__outro"><p>From a shared table to a shared venture.</p><a href="#how-it-works" className="quiet-link">Here’s how it starts <ArrowDownIcon size={17} /></a></div>
