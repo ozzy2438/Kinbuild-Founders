@@ -25,9 +25,13 @@ const files = [
   ['/media/startbeside-film.mp4', 'video/mp4'],
   ['/media/startbeside-poster.webp', 'image/webp'],
   ['/media/startbeside-team.webp', 'image/webp'],
+  ['/images/startbeside-toy-gateway.webp', 'image/webp'],
+  ['/images/arch-left.webp', 'image/webp'],
+  ['/images/arch-right.webp', 'image/webp'],
+  ['/images/arch-top.webp', 'image/webp'],
 ]
 let js = await readFile('artifacts/standalone/startbeside.iife.js', 'utf8')
-let html = await readFile('index.html', 'utf8')
+let html = (await readFile('index.html', 'utf8')).replaceAll('__SITE_URL__', '')
 for (const [path, mime] of files) {
   const data = `data:${mime};base64,${(await readFile(`public${path}`)).toString('base64')}`
   js = js.replaceAll(path, () => data)

@@ -28,7 +28,7 @@ export default defineConfig({
   }, {
     command: 'npm run dev -- --host 127.0.0.1 --port 4175 --strictPort',
     url: 'http://127.0.0.1:4175',
-    env: { VITE_REGISTRATION_MODE: 'netlify', VITE_CONTACT_EMAIL: 'pilot@example.test' },
+    env: { VITE_REGISTRATION_MODE: 'netlify', VITE_CONTACT_EMAIL: 'pilot@example.test', VITE_COMMUNITY_PULSE: 'on' },
     reuseExistingServer: false,
   }],
 })

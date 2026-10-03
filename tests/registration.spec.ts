@@ -8,6 +8,9 @@ async function fillInterest(page: Page) {
   await page.getByLabel('Email address').fill('alex@example.test')
   await page.getByLabel('Your sector').selectOption('SaaS & software')
   await page.getByLabel('Your main skill').selectOption('Engineering & development')
+  await page.getByLabel('Someone who designs').check()
+  await page.getByLabel('Someone who grows it').check()
+  await page.getByLabel('Taking the lead').check()
 }
 
 test('registration waits for acceptance, prevents duplicate sends and explains the next step', async ({ page }) => {
@@ -31,6 +34,7 @@ test('registration waits for acceptance, prevents duplicate sends and explains t
   expect(Object.fromEntries(submissions[0])).toEqual({
     'form-name': 'startbeside-interest', 'bot-field': '', name: 'Alex Example',
     email: 'alex@example.test', sector: 'SaaS & software', skill: 'Engineering & development',
+    looking_for: 'Design, Grow', working_style: 'Taking the lead',
   })
   accept()
   await expect(page.getByRole('status')).toBeFocused()
@@ -89,4 +93,21 @@ test('live registration validates before sending and provides a privacy contact'
   await expect(page.locator('#privacy-content').getByRole('link')).toHaveAttribute('href', 'mailto:pilot@example.test')
   await expect(page.locator('#privacy-content')).not.toContainText('This prototype does not submit')
   expect(requests).toEqual([])
+})
+
+test('community totals appear only when the function reports enough real registrations', async ({ page }) => {
+  await page.route('**/api/community-pulse', route => route.fulfill({ json: { available: true, total: 23, roles: { build: 11, design: 4, grow: 8, other: 0 } } }))
+  await page.goto('/#register')
+  const pulse = page.locator('.pulse')
+  await expect(pulse).toContainText('23')
+  await expect(pulse).toContainText('Most needed right now: designers.')
+  await expect(pulse.locator('li.is-needed')).toContainText('Design')
+  expect((await new AxeBuilder({ page }).include('.register').withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()).violations).toEqual([])
+})
+
+test('community totals stay hidden below the threshold or on failure', async ({ page }) => {
+  await page.route('**/api/community-pulse', route => route.fulfill({ json: { available: false } }))
+  await page.goto('/#register')
+  await expect(page.getByLabel('Your name', { exact: true })).toBeVisible()
+  await expect(page.locator('.pulse')).toHaveCount(0)
 })

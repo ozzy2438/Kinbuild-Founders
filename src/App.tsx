@@ -3,18 +3,18 @@ import { ArrowDownIcon, ArrowUpRightIcon, CaretDownIcon, ListIcon, UsersThreeIco
 import { Artwork } from './components/Artwork'
 import FilmFeature from './components/FilmFeature'
 import InterestForm from './components/InterestForm'
+import PieceFinder from './components/PieceFinder'
+import ProcessSteps from './components/ProcessSteps'
+import Organiser from './components/Organiser'
+import CommunityPulse from './components/CommunityPulse'
 import { registration } from './registration'
+import { roles, roleFor } from './content/roles'
+import type { Preset, RoleId } from './content/roles'
 
 const StoryDialog = lazy(() => import('./components/StoryDialog'))
-const steps = [
-  { number: '01', title: 'Meet', copy: 'Meet people in Melbourne who are ready to start something and contribute.' },
-  { number: '02', title: 'Match', copy: 'Find complementary skills, shared interests and working styles that fit.' },
-  { number: '03', title: 'Build', copy: 'Test a startup idea. Make a first product. See how you work together.' },
-  { number: '04', title: 'Decide', copy: 'Choose whether to keep building. A shared venture starts with a shared decision.' },
-]
 const questions = [
   ['Do I need a startup idea already?', 'No. Bring a skill, a perspective, or a problem you care about. You can explore an idea with other people. You do need a willingness to contribute and follow through.'],
-  ['Is this just another networking event?', 'The intention is to go beyond introductions. The pilot is being designed around complementary skills and a short, practical working experience, so you can learn what collaboration actually feels like.'],
+  ['Is this just another networking event?', 'No. It goes beyond introductions. The pilot is designed around complementary skills and a short, practical working experience, so you learn what collaboration actually feels like.'],
   ['What do you mean by working style?', 'Some people enjoy taking the lead, some want to stay hands-on, and others do their best work supporting a team. We want to understand how you like to contribute alongside your skills and interests. These are preferences to discuss, not fixed personality labels.'],
   ['Do we have to start a company together?', 'No. The point is to find out whether there is a good fit before making a commitment. You can decide to continue, explore another direction, or simply take what you learned.'],
   ['Will StartBeside connect us with investors?', 'That is part of the longer-term ambition: helping a real team develop a validated idea and become ready for investor conversations. The first pilot focuses on meeting and trying to build together. Investor introductions, funding and mentor participation are not confirmed.'],
@@ -27,6 +27,7 @@ function App() {
   const [storyOpen, setStoryOpen] = useState(false)
   const [storyLoaded, setStoryLoaded] = useState(false)
   const [privacyOpen, setPrivacyOpen] = useState(false)
+  const [preset, setPreset] = useState<Preset | null>(null)
 
   useEffect(() => {
     const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setMenuOpen(false) }
@@ -35,21 +36,28 @@ function App() {
   }, [])
 
   const watch = () => { setStoryLoaded(true); setStoryOpen(true) }
+  const completeArch = (id: RoleId) => {
+    setPreset({ skill: roleFor(id).skill, seeking: roles.filter(role => role.id !== id).map(role => role.label), nonce: Date.now() })
+    requestAnimationFrame(() => {
+      document.getElementById('register')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+      document.getElementById('register-title')?.focus({ preventScroll: true })
+    })
+  }
 
   return <>
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="site-header shell">
       <a className="wordmark" href="#" aria-label="StartBeside home">StartBeside</a>
-      <nav aria-label="Main navigation" className="desktop-nav"><a href="#how-it-works">How it works</a><a href="#the-pilot">The pilot</a><a href="#about">About</a><a className="button button--small" href="#register">Register interest <ArrowUpRightIcon size={17} /></a></nav>
+      <nav aria-label="Main navigation" className="desktop-nav"><a href="#your-piece">Your piece</a><a href="#how-it-works">How it works</a><a href="#the-pilot">The pilot</a><a href="#about">About</a><a className="button button--small" href="#register">Register interest <ArrowUpRightIcon size={17} /></a></nav>
       <button className="icon-button menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="mobile-nav" onClick={() => setMenuOpen(value => !value)}>{menuOpen ? <XIcon size={25} /> : <ListIcon size={26} />}</button>
-      <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>{[['How it works', '#how-it-works'], ['The pilot', '#the-pilot'], ['About', '#about'], ['Register interest', '#register']].map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}<ArrowUpRightIcon size={18} /></a>)}</nav>
+      <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>{[['Your piece', '#your-piece'], ['How it works', '#how-it-works'], ['The pilot', '#the-pilot'], ['About', '#about'], ['Register interest', '#register']].map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}<ArrowUpRightIcon size={18} /></a>)}</nav>
     </header>
 
     <main id="main">
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="hero__copy">
           <p className="eyebrow hero__eyebrow">MELBOURNE · FOUNDING PILOT</p>
-          <h1 id="hero-title"><span>Don’t build</span><span>alone.</span></h1>
+          <h1 id="hero-title"><span>Don’t build</span><span>alone<span className="accent-dot">.</span></span></h1>
           <p className="hero__lead">Meet people in Melbourne. Test a startup idea together. See if you’re a team.</p>
           <p className="hero__description">A Melbourne community for future co-founders — from a first conversation to a shared venture.</p>
           <p className="hero__match"><UsersThreeIcon size={25} weight="light" aria-hidden="true" /><span>Matched by skills, sector and how you like to work.</span></p>
@@ -57,7 +65,7 @@ function App() {
           <p className="pilot-note">We’re shaping the first Melbourne pilot.<br />Dates and venue will be announced.</p>
         </div>
         <div className="hero__visual">
-          <Artwork entrance />
+          <Artwork entrance labels />
           <p className="art-caption">Different strengths. Shared direction.</p>
         </div>
         <div className="hero__discovery"><p>Good things start with people.</p><a href="#film">See what comes together <ArrowDownIcon size={18} aria-hidden="true" /></a></div>
@@ -65,23 +73,25 @@ function App() {
 
       <FilmFeature onPlay={watch} />
 
+      <PieceFinder onComplete={completeArch} />
+
       <section id="how-it-works" className="process shell" aria-labelledby="process-title">
         <div className="section-intro"><p className="eyebrow">HOW IT WORKS</p><h2 id="process-title">Meeting someone is easy.<br />Knowing you can build together takes more.</h2></div>
-        <ol className="process__steps">{steps.map(step => <li key={step.number}><span className="step-number">{step.number}</span><h3>{step.title}</h3><p>{step.copy}</p></li>)}</ol>
-        <div className="next-chapter"><p className="eyebrow">AND THEN, WHEN YOU’RE READY</p><div><h3>A real team. A validated idea.<br className="mobile-only" /> A path towards investors.</h3><p>Investor readiness is a longer-term ambition, not a promise of funding.</p></div></div>
+        <ProcessSteps />
+        <div className="next-chapter"><p className="eyebrow">AND THEN, WHEN YOU’RE READY</p><div><h3>A real team. A validated idea.<br className="mobile-only" /> A path towards investors.</h3><p>The longer-term ambition, built one step at a time.</p></div></div>
       </section>
 
       <section id="the-pilot" className="pilot" aria-labelledby="pilot-title">
         <div className="shell">
-          <div className="pilot__inner"><div><p className="eyebrow">THE MELBOURNE PILOT</p><h2 id="pilot-title">A first meeting.<br />A possible beginning.</h2><p className="pilot__body">A small, guided beginning: meet people, choose who you’d like to work with and try a startup idea together before deciding what comes next.</p><div className="pilot__actions"><a href="#register" className="button button--light">Register your interest <ArrowUpRightIcon size={19} /></a><p>Dates and venue will be announced.</p></div></div><span className="pilot__aside">Start small.<br />Think further.</span></div>
+          <div className="pilot__inner"><div><p className="eyebrow">THE MELBOURNE PILOT</p><h2 id="pilot-title">A first meeting.<br />A possible beginning.</h2><p className="pilot__body">A small, guided beginning: meet people, choose who you’d like to work with and try a startup idea together before deciding what comes next.</p><div className="pilot__actions"><a href="#register" className="button button--light">Register your interest <ArrowUpRightIcon size={19} /></a><p>In person · Melbourne</p></div></div><span className="pilot__aside">Start small.<br />Think further.</span></div>
           <div className="pilot-overview" aria-labelledby="pilot-overview-title">
-            <div className="pilot-overview__heading"><h3 id="pilot-overview-title">Pilot at a glance</h3><p>Planned format · Details to be confirmed</p></div>
+            <div className="pilot-overview__heading"><h3 id="pilot-overview-title">Pilot at a glance</h3><p>Planned format</p></div>
             <dl className="pilot-overview__details">
               <div><dt>Who it’s for</dt><dd>People who want to try building a startup and can bring a skill, an idea or industry experience. No finished idea required.</dd></div>
-              <div><dt>Where we’ll meet</dt><dd>Melbourne, with an in-person introduction. The date and venue are still being arranged.</dd></div>
+              <div><dt>Where we’ll meet</dt><dd>Melbourne, starting with an in-person introduction.</dd></div>
               <div><dt>What we’re planning</dt><dd>A face-to-face meeting, mutual choice of who to work with, and a short trial on one small shared task, with a check-in along the way.</dd></div>
               <div><dt>What you’ll bring</dt><dd>Time you can realistically commit, a contribution to the shared task and a willingness to follow through. We’ll discuss availability before any invitation.</dd></div>
-              <div><dt>What you’ll leave with</dt><dd>Something you’ve tried together and a clearer decision: keep building, change direction or stop. Finding no suitable match is also a valid outcome.</dd></div>
+              <div><dt>What you’ll leave with</dt><dd>Something you’ve tried together and a clearer decision: keep building, change direction or stop.</dd></div>
             </dl>
             <p className="pilot-overview__note">Dates, venue, group size, time commitment and any cost will be confirmed before you’re asked to commit. There’s no requirement to start a company and no promise of funding.</p>
           </div>
@@ -94,7 +104,7 @@ function App() {
         <div><span>03</span><div><h3>You’re ready for a new chapter.</h3><p>Bring your experience, your curiosity and the intention to follow through.</p></div><ArrowUpRightIcon size={23} weight="light" aria-hidden="true" /></div>
       </div><p className="belong__note">You don’t need a finished idea. You do need a willingness to contribute.</p></section>
 
-      <section id="about" className="about" aria-labelledby="about-title"><div className="shell about__inner"><p className="eyebrow">WHY STARTBESIDE EXISTS</p><div><h2 id="about-title">Good ideas need more<br />than a good first conversation.</h2><div className="about__columns"><p>A conversation can spark an idea. Finding out who you can build it with takes something more: time, shared effort and a chance to try working together.</p><p>StartBeside is creating that space in Melbourne. Our first pilot is being shaped around meeting people with different strengths, choosing who to work with and trying one small task together — so the next step comes from shared experience.</p></div><p className="about__closing">Small beginnings. Real contribution. Something shared.</p></div></div></section>
+      <section id="about" className="about" aria-labelledby="about-title"><div className="shell about__inner"><p className="eyebrow">WHY STARTBESIDE EXISTS</p><div><h2 id="about-title">Good ideas need more<br />than a good first conversation.</h2><div className="about__columns"><p>A conversation can spark an idea. Finding out who you can build it with takes something more: time, shared effort and a chance to try working together.</p><p>StartBeside is creating that space in Melbourne. Our first pilot is designed around meeting people with different strengths, choosing who to work with and trying one small task together — so the next step comes from shared experience.</p></div><p className="about__closing">Small beginnings. Real contribution. Something shared.</p><Organiser /></div></div></section>
 
       <section className="faq shell" aria-labelledby="faq-title"><div className="faq__intro"><p className="eyebrow">A FEW THINGS TO KNOW</p><h2 id="faq-title">Good questions.<br />Honest answers.</h2></div><div className="faq__list">{questions.map(([question, answer]) => <details key={question}><summary>{question}<CaretDownIcon size={20} aria-hidden="true" /></summary><p>{answer}</p></details>)}</div></section>
 
@@ -112,8 +122,9 @@ function App() {
               </ol>
               <p className="registration-next__note">Registering interest does not guarantee a place. You choose whether to accept an invitation.</p>
             </div>
+            <CommunityPulse />
           </div>
-          <InterestForm onPrivacy={() => setPrivacyOpen(true)} />
+          <InterestForm onPrivacy={() => setPrivacyOpen(true)} preset={preset} />
         </div>
       </section>
 
@@ -125,7 +136,8 @@ function App() {
         <summary id="privacy-title">Your details, treated with care.<CaretDownIcon size={18} /></summary>
         <div>
           {registration.enabled ? <>
-            <p>StartBeside uses your name, email, sector and main skill to plan the Melbourne pilot, review potential fit and contact you about your interest. Submissions are stored with Netlify and reviewed by the organiser. They are not published or shared with other participants, mentors or investors without your permission.</p>
+            <p>StartBeside uses your name, email, sector, main skill, who you’d like to meet and how you like to work to plan the Melbourne pilot, review potential fit and contact you about your interest. Submissions are stored with Netlify and reviewed by the organiser. They are not published or shared with other participants, mentors or investors without your permission.</p>
+            <p>Once enough people have registered, the site may show anonymous totals, such as how many people bring each broad strength. Names, emails and individual answers are never shown.</p>
             <p>To ask about your information, request a correction or have it deleted, contact <a href={`mailto:${registration.contactEmail}`}>{registration.contactEmail}</a>. You can also ask us to stop contacting you.</p>
             <p>There are no analytics or advertising trackers. Fonts and images are served with the site.</p>
           </> : <>

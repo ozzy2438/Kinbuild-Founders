@@ -102,6 +102,14 @@ export default function StoryDialog({ open, onClose }: { open: boolean; onClose:
     })
   }
 
+  const goToFinder = () => {
+    close()
+    requestAnimationFrame(() => {
+      document.getElementById('your-piece')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+      document.getElementById('finder-title')?.focus({ preventScroll: true })
+    })
+  }
+
   return <dialog ref={dialog} className={`film-dialog ${expanded ? 'is-expanded' : ''}`} aria-labelledby="film-title" onCancel={close} onClick={event => { if (event.target === event.currentTarget) close() }}>
     <div className={`film-window ${paused ? 'is-paused' : 'is-playing'}`} ref={windowRef}>
       <header className="film-window__bar">
@@ -123,6 +131,15 @@ export default function StoryDialog({ open, onClose }: { open: boolean; onClose:
           {captionUrl && <track key={captionUrl} kind="captions" srcLang="en" label="English" src={captionUrl} default />}
         </video>
         {!started && !error && <button className="film-start" onClick={play}><span><PlayIcon size={28} weight="fill" /></span>Play with sound</button>}
+        {finished && !error && <div className="film-end">
+          <img src="/images/startbeside-arch.webp" alt="" width="1254" height="1254" />
+          <div>
+            <p className="eyebrow eyebrow--accent">YOUR TURN</p>
+            <h3>Every gateway starts with one piece.</h3>
+            <p>Find yours, then find the people who complete it.</p>
+            <div className="film-end__actions"><button className="button" onClick={goToFinder}>Find my missing piece <ArrowUpRightIcon size={18} /></button><button className="text-button" onClick={play}><ArrowCounterClockwiseIcon size={17} /> Watch again</button></div>
+          </div>
+        </div>}
         {error && <div className="film-message" role="alert"><p>The film couldn’t load.</p><button className="button button--light" onClick={() => { setError(false); player.current?.load(); void player.current?.play().catch(() => setPaused(true)) }}>Try again</button><span>The full transcript is below.</span></div>}
       </div>
       <div className="film-controls">

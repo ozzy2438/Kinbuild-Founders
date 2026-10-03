@@ -1,10 +1,12 @@
 import { useRef } from 'react'
 import type { CSSProperties, PointerEvent } from 'react'
 import { useEntrance } from '../hooks/useEntrance'
+import { roles } from '../content/roles'
 
 const source = '/images/startbeside-arch.webp'
+const short = { left: 'Engineering & data', right: 'Product & design', top: 'Growth & sales' }
 
-export function Artwork({ cinematic = false, entrance = false }: { cinematic?: boolean; entrance?: boolean }) {
+export function Artwork({ cinematic = false, entrance = false, labels = false }: { cinematic?: boolean; entrance?: boolean; labels?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const arrival = useEntrance<HTMLDivElement>()
   const move = (event: PointerEvent<HTMLDivElement>) => {
@@ -26,6 +28,10 @@ export function Artwork({ cinematic = false, entrance = false }: { cinematic?: b
     <div className="artwork__perspective" ref={ref}>
       <img className="artwork__whole" src={source} alt={cinematic ? '' : 'Three different stone pieces come together to form one architectural gateway.'} width="1254" height="1254" fetchPriority={cinematic ? 'auto' : 'high'} draggable="false" />
       {(entrance || cinematic) && ['left', 'right', 'top'].map((piece, i) => <img key={piece} className={`artwork__piece artwork__piece--${piece}`} src={source} alt="" aria-hidden="true" width="1254" height="1254" draggable="false" style={{ '--piece-index': i } as CSSProperties} />)}
+      {labels && <div className="artwork__labels" aria-hidden="true">
+        {roles.map(role => <span key={role.piece} className={`artwork__hit artwork__hit--${role.piece}`} onPointerEnter={() => { if (arrival.ref.current) arrival.ref.current.dataset.hover = role.piece }} onPointerLeave={() => { if (arrival.ref.current) delete arrival.ref.current.dataset.hover }} />)}
+        {roles.map(role => <span key={role.piece} className={`artwork__label artwork__label--${role.piece}`}><i /><b>{role.label}</b><small>{short[role.piece]}</small></span>)}
+      </div>}
     </div>
   </div>
 }

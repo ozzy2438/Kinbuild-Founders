@@ -24,3 +24,11 @@ Geçici iletişim adresi: **osmanorka@gmail.com**. Site StartBeside’ın amacı
 İletişim adresini değiştirmek için `.env` ve `netlify.toml` içindeki `VITE_CONTACT_EMAIL` değerini güncelleyin; `npm run build:netlify` ile yeni dosyaları üretip aynı projeye yükleyin. Tek dosyalık gösterim için `npm run build:standalone` kullanılır. Git bağlantısı üzerinden Netlify’da üretim derlemesi yapılırsa `netlify.toml` üretim ayarları devreye girer.
 
 Yeni domain satın almaya gerek yok. Kullanıcı Free plana geçtiğini bildirdi; gerçek hesap planı ve etkin ayarları, hesap bağlantısı veya panel üzerinden doğrulanmalıdır. Bu belge hazırlanırken henüz dağıtım yapılmadı.
+
+## Tasarım güncellemesi (Ekim 2026)
+
+- **Yeni form alanları:** `looking_for` (kimi arıyor) ve `working_style` (çalışma tarzı). Yayından sonra Netlify’ın bu alanları tanıması için form algılama açıkken bir kez yeniden yükleyin ve **Forms** altında iki yeni sütunu kontrol edin.
+- **Paylaşım görseli:** LinkedIn ve WhatsApp önizlemesi için `public/og/startbeside-share.jpg` eklendi. Önizlemenin görünmesi için görsel adresinin tam (mutlak) olması gerekir. Git bağlantılı Netlify derlemesinde bu otomatik ayarlanır. `npm run build:netlify` ile elle paket üretiyorsanız önce site adresini verin, örneğin `VITE_SITE_URL=https://startbeside.netlify.app npm run build:netlify`. Yayından sonra [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) ile kontrol edin.
+- **Kurucu notu (isteğe bağlı):** `src/content/organiser.ts` içine ad ve iki cümlelik bir not yazılınca “Why StartBeside exists” bölümünde görünür. Fotoğraf (`public/images/` altına kare bir görsel) ve LinkedIn adresi isteğe bağlıdır. Boş bırakılırsa bölüm görünmez.
+- **Topluluk sayacı (isteğe bağlı, varsayılan kapalı):** Kayıt sayısını ve beceri dağılımını anonim olarak gösterir. Bir Netlify Function gerektirir. Netlify Drop ile yüklenen pakette çalışmaz ve plan kullanımına sayılır. Açma adımları `docs/netlify-registration.md` içinde.
+- `artifacts/` içindeki ZIP ve tek dosyalık HTML eski sürümdür. Yeniden üretmek için `npm run build:netlify` ve `npm run build:standalone` komutlarını çalıştırın.

@@ -34,9 +34,22 @@ These settings are public, compiled into the website, and require rebuilding aft
 
 The organiser has chosen a project-focused site: no personal name, portrait or biography is required. The About section explains StartBeside’s purpose and planned pilot. A LinkedIn link is optional. The public contact email can be a project address; a custom domain is not required. Dates, venue, time commitment, group size and cost remain unconfirmed and are described that way on the page.
 
+## New form fields
+
+The form now also sends `looking_for` (Build, Design, Grow or Open, comma-separated) and `working_style`. Both are declared in the hidden detection form in `index.html`. Netlify only learns new fields at the next deploy with form detection on, so redeploy once after this change and check that both columns appear.
+
+## Optional: anonymous community totals
+
+`netlify/functions/community-pulse.mjs` reads the form's submissions with the Netlify API and returns only counts per strength (Build, Design, Grow), one per email address. It returns nothing until at least `PULSE_MIN_TOTAL` people (default 12) have registered, and the site hides the block on any error. It is off by default. To turn it on:
+
+1. Create a Netlify personal access token and add it to the site's environment variables as `NETLIFY_FORMS_TOKEN` (functions scope). Optionally set `PULSE_MIN_TOTAL`.
+2. Set `VITE_COMMUNITY_PULSE=on` for the production context (for example in `netlify.toml`) and deploy through a Git-connected or CLI build. Netlify Drop uploads static files only, so the function is not deployed that way.
+
+Functions count towards the plan's usage. Responses are cached at the CDN for 15 minutes, so a busy day still triggers only a handful of invocations, but leave it off if the account must stay strictly within free static hosting.
+
 ## Cost and manual publishing notes
 
-The current credit-based Free plan has 300 monthly credits and a hard usage limit, with no automatic recharge option. Production deployments consume 15 credits, bandwidth 20 credits per GB, and requests 2 credits per 10,000 requests. Forms are free and unlimited on credit-based plans; older legacy accounts have different terms. These are published plan terms, not a verified view of the organiser’s billing account. The site uses no Netlify AI features or functions. Use the included `netlify.app` address for now.
+The current credit-based Free plan has 300 monthly credits and a hard usage limit, with no automatic recharge option. Production deployments consume 15 credits, bandwidth 20 credits per GB, and requests 2 credits per 10,000 requests. Forms are free and unlimited on credit-based plans; older legacy accounts have different terms. These are published plan terms, not a verified view of the organiser’s billing account. The site uses no Netlify AI features. The only function is the optional community-totals endpoint above, which stays unused unless enabled. Use the included `netlify.app` address for now.
 
 This workspace has no authenticated Netlify connection. A pre-built production folder can be uploaded from the intended account using [Netlify Drop](https://app.netlify.com/drop), without a build running on Netlify. Enable **Forms → Enable form detection** and redeploy after enabling it; form detection applies from the next deploy. Confirm `startbeside-interest` appears before announcing registration. For later updates, upload to the existing project’s Deploys page. If the project is private by default, change its visibility to public when publishing.
 

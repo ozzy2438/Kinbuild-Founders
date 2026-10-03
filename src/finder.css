@@ -1,0 +1,100 @@
+@layer components {
+  .finder { overflow-x: clip; display: grid; grid-template-columns: minmax(0, 44%) minmax(0, 56%); align-items: center; gap: 0; padding-block: 104px 96px; border-top: 1px solid var(--line); }
+  .finder h2 { margin-top: 24px; font-size: clamp(36px, 4.4vw, 62px); line-height: 1.05; letter-spacing: -.055em; font-weight: 650; }
+  .finder__lead { margin-top: 20px; max-width: 430px; color: var(--muted); font-size: 17px; line-height: 1.6; }
+
+  .finder__choices { display: grid; gap: 10px; margin: 34px 0 0; padding: 0; border: 0; max-width: 480px; }
+  .finder-choice { position: relative; display: grid; grid-template-columns: 44px 1fr 22px; align-items: center; gap: 14px; padding: 14px 16px 14px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fbfaf7; cursor: pointer; transition: border-color .25s, background .25s, box-shadow .25s, transform .25s; }
+  .finder-choice:hover { border-color: #a7a59c; transform: translateX(3px); }
+  .finder-choice input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .finder-choice:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .finder-choice__glyph { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--stone); color: var(--ink); transition: background .25s, color .25s; }
+  .finder-choice__text { display: grid; gap: 1px; min-width: 0; }
+  .finder-choice__text strong { font-family: var(--heading); font-size: 17px; font-weight: 650; letter-spacing: -.03em; }
+  .finder-choice__text span { color: var(--muted); font-size: 13px; line-height: 1.45; }
+  .finder-choice__check { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; border: 1px solid #b5b2a9; color: transparent; transition: background .25s, border-color .25s, color .25s; }
+  .finder-choice.is-selected { border-color: var(--accent); background: var(--accent-wash); box-shadow: 0 10px 26px -18px var(--accent); }
+  .finder-choice.is-selected .finder-choice__glyph { background: var(--accent); color: white; }
+  .finder-choice.is-selected .finder-choice__check { background: var(--accent); border-color: var(--accent); color: white; }
+
+  .finder__result { min-height: 52px; margin-top: 22px; max-width: 480px; font-size: 15px; line-height: 1.6; }
+  .finder__result span { font-weight: 600; color: var(--accent); }
+  .finder__hint { color: var(--muted); }
+  .finder__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 14px; }
+  .finder__actions .button:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
+  .finder__actions p { color: var(--muted); font-size: 12px; }
+
+  /* Stage: three real cut-out stones, offset until a choice settles them. */
+  .finder__stage { position: relative; isolation: isolate; width: min(92%, 580px); aspect-ratio: 1; justify-self: center; }
+  .finder__ground { position: absolute; left: 6%; right: 2%; bottom: 3%; height: 9%; border-radius: 50%; background: radial-gradient(closest-side, #19191920, #19191900); filter: blur(6px); transition: opacity .6s; }
+  .finder-piece { position: absolute; inset: 0; pointer-events: none; }
+  .finder-piece img { position: absolute; inset: 0; width: 100%; height: 100%; user-select: none; }
+  .finder-piece__move { position: absolute; inset: 0; transition: transform 1s cubic-bezier(.2,.75,.2,1), opacity .6s; transition-delay: calc(var(--i) * 70ms); }
+  .finder-piece__body { position: absolute; inset: 0; animation: piece-float 5.5s ease-in-out infinite alternate; animation-delay: calc(var(--i) * -1.7s); transition: opacity .5s, filter .5s; }
+  .finder-piece__body img { pointer-events: auto; cursor: pointer; transition: filter .5s; }
+  .finder-piece__tint { position: absolute; inset: 0; background: var(--accent); mix-blend-mode: color; opacity: 0; -webkit-mask: var(--piece) center / 100% 100% no-repeat; mask: var(--piece) center / 100% 100% no-repeat; transition: opacity .7s; pointer-events: none; }
+  .finder-piece__label { position: absolute; transform: translate(-50%, -50%); display: inline-flex; gap: 5px; white-space: nowrap; padding: 6px 12px; border: 1px solid var(--line); border-radius: 99px; background: #fbfaf7e8; backdrop-filter: blur(6px); font-size: 12px; font-weight: 500; letter-spacing: .01em; box-shadow: 0 6px 16px -10px #1919194d; transition: background .4s, color .4s, border-color .4s, opacity .4s; }
+  .finder-piece__label b { font-weight: 650; }
+  .finder-piece--left .finder-piece__label { left: 25%; top: 66%; }
+  .finder-piece--right .finder-piece__label { left: 80%; top: 70%; }
+  .finder-piece--top .finder-piece__label { left: 48%; top: 17%; }
+
+  /* Before arrival the pieces wait further apart and invisible. */
+  .finder__stage:not(.has-entered) .finder-piece__move { opacity: 0; }
+  .finder__stage .finder-piece--left .finder-piece__move { transform: translate(-7%, 5%) rotate(-4deg); }
+  .finder__stage .finder-piece--right .finder-piece__move { transform: translate(7%, 6%) rotate(4deg); }
+  .finder__stage .finder-piece--top .finder-piece__move { transform: translate(1%, -10%) rotate(-2.5deg); }
+  .finder__stage:not(.has-entered) .finder-piece--left .finder-piece__move { transform: translate(-16%, 10%) rotate(-9deg); }
+  .finder__stage:not(.has-entered) .finder-piece--right .finder-piece__move { transform: translate(16%, 12%) rotate(9deg); }
+  .finder__stage:not(.has-entered) .finder-piece--top .finder-piece__move { transform: translate(0, -22%) rotate(-6deg); }
+
+  .finder__stage .finder-piece.is-mine .finder-piece__move,
+  .finder__stage.is-complete .finder-piece .finder-piece__move { transform: none; }
+  .finder-piece.is-mine .finder-piece__body { animation: none; }
+  .finder-piece.is-mine .finder-piece__tint { opacity: .64; }
+  .finder-piece.is-mine .finder-piece__label { background: var(--accent); border-color: var(--accent); color: white; }
+  .finder-piece.is-missing .finder-piece__body { opacity: .38; filter: grayscale(1); }
+  .finder-piece.is-missing .finder-piece__label { border: 1px dashed var(--accent); color: var(--accent); background: #fbfaf7f2; }
+  .finder__stage.is-complete .finder-piece__body { animation: none; opacity: 1; filter: none; }
+  .finder__stage.is-complete .finder-piece:not(.is-mine) .finder-piece__label { opacity: 0; }
+  .finder__stage.is-complete .finder-piece__move { transition-delay: calc(var(--i) * 120ms); }
+  .finder__stage.is-chosen .finder__ground { opacity: .6; }
+
+  .finder__caption { position: absolute; left: 0; right: 0; bottom: -6px; text-align: center; font-size: 12px; color: var(--muted); }
+  .finder__stage.is-complete .finder__caption { color: var(--accent); font-weight: 600; animation: caption-in .6s .5s both; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+
+@keyframes piece-float { from { transform: translateY(-1.1%); } to { transform: translateY(1.1%); } }
+@keyframes caption-in { from { opacity: 0; transform: translateY(6px); } }
+
+@layer responsive {
+  @media (max-width: 1050px) and (min-width: 761px) {
+    .finder { grid-template-columns: 1fr 1fr; gap: 4%; }
+  }
+  @media (max-width: 760px) {
+    .finder { display: flex; flex-direction: column; align-items: stretch; padding-block: 58px 52px; }
+    .finder__copy { display: contents; }
+    .finder .eyebrow { order: 0; }
+    .finder h2 { order: 1; font-size: 38px; margin-top: 18px; }
+    .finder__lead { order: 2; font-size: 15px; margin-top: 14px; }
+    .finder__stage { order: 3; width: min(86%, 300px); align-self: center; justify-self: auto; margin: 20px 0 18px; }
+    .finder__choices { order: 4; margin-top: 0; max-width: none; }
+    .finder__result { order: 5; min-height: 0; font-size: 14px; }
+    .finder__actions { order: 6; }
+    .finder-choice { padding-block: 11px; grid-template-columns: 40px 1fr 22px; }
+    .finder-choice__glyph { width: 40px; height: 40px; }
+    .finder-choice__text strong { font-size: 16px; }
+    .finder-choice__text span { font-size: 12px; }
+    .finder-piece__label { font-size: 11px; padding: 4px 9px; }
+    .finder__stage:not(.is-complete) .finder-piece--left:not(.is-mine) .finder-piece__move { transform: translate(-4%, 4%) rotate(-4deg); }
+    .finder__stage:not(.is-complete) .finder-piece--right:not(.is-mine) .finder-piece__move { transform: translate(3%, 5%) rotate(4deg); }
+    .finder__stage:not(.is-complete) .finder-piece--top:not(.is-mine) .finder-piece__move { transform: translate(0, -7%) rotate(-2.5deg); }
+    .finder-piece--right .finder-piece__label { left: 74%; }
+    .finder__caption { bottom: -30px; }
+    .finder__stage { margin-bottom: 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .finder-piece__body { animation: none !important; }
+  }
+}
