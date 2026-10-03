@@ -36,4 +36,12 @@ export const workingStyles = [
   { value: 'Still finding out', hint: 'Happy to learn what fits' },
 ] as const
 
+export const weeklyHours = [
+  { value: 'Under 4 hours', hint: 'Tight at the moment' },
+  { value: '4–6 hours', hint: 'What the trial asks for' },
+  { value: 'More than 6 hours', hint: 'Room to spare' },
+] as const
+
+export const availability = ['Weekday evenings', 'Weekday daytime', 'Weekends', 'Flexible'] as const
+
 export type Preset = { skill: string; seeking: string[]; nonce: number }

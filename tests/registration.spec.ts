@@ -11,6 +11,9 @@ async function fillInterest(page: Page) {
   await page.getByLabel('Someone who designs').check()
   await page.getByLabel('Someone who grows it').check()
   await page.getByLabel('Taking the lead').check()
+  await page.getByLabel('4–6 hours').check()
+  await page.getByLabel('Weekday evenings').check()
+  await page.getByLabel('Weekends').check()
 }
 
 test('registration waits for acceptance, prevents duplicate sends and explains the next step', async ({ page }) => {
@@ -35,6 +38,7 @@ test('registration waits for acceptance, prevents duplicate sends and explains t
     'form-name': 'startbeside-interest', 'bot-field': '', name: 'Alex Example',
     email: 'alex@example.test', sector: 'SaaS & software', skill: 'Engineering & development',
     looking_for: 'Design, Grow', working_style: 'Taking the lead',
+    weekly_hours: '4–6 hours', availability: 'Weekday evenings, Weekends',
   })
   accept()
   await expect(page.getByRole('status')).toBeFocused()

@@ -27,7 +27,8 @@ Yeni domain satın almaya gerek yok. Kullanıcı Free plana geçtiğini bildirdi
 
 ## Tasarım güncellemesi (Ekim 2026)
 
-- **Yeni form alanları:** `looking_for` (kimi arıyor) ve `working_style` (çalışma tarzı). Yayından sonra Netlify’ın bu alanları tanıması için form algılama açıkken bir kez yeniden yükleyin ve **Forms** altında iki yeni sütunu kontrol edin.
+- **Pilot sözü:** `docs/pilot-01.md` sitedeki sözün kaynağıdır; önce orayı, sonra siteyi değiştirin.
+- **Yeni form alanları:** `looking_for` (kimi arıyor), `working_style` (çalışma tarzı), `weekly_hours` (haftalık saat) ve `availability` (uygun zamanlar, isteğe bağlı). Yayından sonra Netlify’ın bu alanları tanıması için form algılama açıkken bir kez yeniden yükleyin ve **Forms** altında iki yeni sütunu kontrol edin.
 - **Paylaşım görseli:** LinkedIn ve WhatsApp önizlemesi için `public/og/startbeside-share.jpg` eklendi. Önizlemenin görünmesi için görsel adresinin tam (mutlak) olması gerekir. Git bağlantılı Netlify derlemesinde bu otomatik ayarlanır. `npm run build:netlify` ile elle paket üretiyorsanız önce site adresini verin, örneğin `VITE_SITE_URL=https://startbeside.netlify.app npm run build:netlify`. Yayından sonra [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) ile kontrol edin.
 - **Kurucu notu (isteğe bağlı):** `src/content/organiser.ts` içine ad ve iki cümlelik bir not yazılınca “Why StartBeside exists” bölümünde görünür. Fotoğraf (`public/images/` altına kare bir görsel) ve LinkedIn adresi isteğe bağlıdır. Boş bırakılırsa bölüm görünmez.
 - **Topluluk sayacı (isteğe bağlı, varsayılan kapalı):** Kayıt sayısını ve beceri dağılımını anonim olarak gösterir. Bir Netlify Function gerektirir. Netlify Drop ile yüklenen pakette çalışmaz ve plan kullanımına sayılır. Açma adımları `docs/netlify-registration.md` içinde.

@@ -158,7 +158,7 @@ export default function StoryDialog({ open, onClose }: { open: boolean; onClose:
         <p id="film-description"><span className="eyebrow">A SHARED BEGINNING</span><span>From a first idea to a shared venture.</span></p>
         <button className="text-button" onClick={goToForm}>Find your people <ArrowUpRightIcon size={19} /></button>
       </footer>
-      <details className="film-transcript"><summary>Read the transcript <span>English narration</span></summary><p>Great ideas don't grow alone. They grow with people who see things differently. At StartBeside, find your people, and turn that first idea into a real startup. Start small, build together, and see how far you can go. StartBeside. Don't build alone.</p><p>Pilot note: Investor readiness is a longer-term ambition. No promise of funding.</p></details>
+      <details className="film-transcript"><summary>Read the transcript <span>English narration</span></summary><p>Great ideas don't grow alone. They grow with people who see things differently. At StartBeside, find your people, and turn that first idea into a real startup. Start small, build together, and see how far you can go. StartBeside. Don't build alone.</p><p>Pilot note: StartBeside takes no equity and does not promise funding or investor introductions.</p></details>
     </div>
   </dialog>
 }

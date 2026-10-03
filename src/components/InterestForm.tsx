@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { ArrowRightIcon, ArrowUpRightIcon, CheckIcon, CaretDownIcon, EnvelopeSimpleIcon, LinkedinLogoIcon, LinkSimpleIcon, PuzzlePieceIcon, ShareNetworkIcon, WhatsappLogoIcon } from '@phosphor-icons/react'
 import { registration } from '../registration'
-import { seekingOptions, workingStyles } from '../content/roles'
+import { availability, seekingOptions, weeklyHours, workingStyles } from '../content/roles'
 import type { Preset } from '../content/roles'
 
-type TextField = 'name' | 'email' | 'sector' | 'skill' | 'style'
-type Values = Record<TextField, string> & { seeking: string[] }
+type TextField = 'name' | 'email' | 'sector' | 'skill' | 'style' | 'hours'
+type Values = Record<TextField, string> & { seeking: string[]; days: string[] }
 type FieldName = keyof Values
-const empty: Values = { name: '', email: '', sector: '', skill: '', style: '', seeking: [] }
-const order: FieldName[] = ['name', 'email', 'sector', 'skill', 'seeking', 'style']
+const empty: Values = { name: '', email: '', sector: '', skill: '', style: '', hours: '', seeking: [], days: [] }
+const order: FieldName[] = ['name', 'email', 'sector', 'skill', 'seeking', 'style', 'hours']
 const sectors = ['AI & machine learning', 'SaaS & software', 'Fintech', 'E-commerce & retail', 'Health & wellbeing', 'Climate & sustainability', 'Education', 'Creative industries', 'Still exploring', 'Something else']
 const skills = ['Engineering & development', 'Product & strategy', 'Design & user experience', 'Marketing & growth', 'Sales & partnerships', 'Operations & finance', 'Industry expertise', 'Research & data', 'Still discovering my strengths', 'Something else']
 
@@ -45,6 +45,7 @@ export default function InterestForm({ onPrivacy, preset }: { onPrivacy: () => v
     })
     setErrors(previous => ({ ...previous, seeking: undefined }))
   }
+  const toggleDay = (value: string) => setValues(previous => ({ ...previous, days: previous.days.includes(value) ? previous.days.filter(item => item !== value) : [...previous.days, value] }))
   const submit = async (event: FormEvent) => {
     event.preventDefault()
     if (inFlight.current) return
@@ -56,6 +57,7 @@ export default function InterestForm({ onPrivacy, preset }: { onPrivacy: () => v
     if (!values.skill) next.skill = 'Choose your main skill, or tell us you’re exploring.'
     if (!values.seeking.length) next.seeking = 'Choose who you’d like to meet, or “Open to anyone”.'
     if (!values.style) next.style = 'Choose how you like to work, or “Still finding out”.'
+    if (!values.hours) next.hours = 'Choose roughly how much time you could give.'
     setErrors(next)
     const first = order.find(field => next[field])
     if (first) { form.current?.querySelector<HTMLElement>(`#interest-${first}`)?.focus(); return }
@@ -81,6 +83,8 @@ export default function InterestForm({ onPrivacy, preset }: { onPrivacy: () => v
           skill: values.skill,
           looking_for: values.seeking.join(', '),
           working_style: values.style,
+          weekly_hours: values.hours,
+          availability: values.days.join(', '),
         }).toString(),
         signal: AbortSignal.timeout(15_000),
       })
@@ -141,6 +145,23 @@ export default function InterestForm({ onPrivacy, preset }: { onPrivacy: () => v
         <span>{style.value}</span><small>{style.hint}</small>
       </label>)}</div>
       {errors.style && <p id="error-style" className="field-error">{errors.style}</p>}
+    </fieldset>
+    <fieldset className="field-group" data-invalid={Boolean(errors.hours)} aria-describedby={errors.hours ? 'error-hours' : 'hint-hours'}>
+      <legend>Time you could give during the trial</legend>
+      <p id="hint-hours" className="field-group__hint">The pilot is designed around 4–6 hours a week, alongside work or study.</p>
+      <div className="chip-grid chip-grid--three">{weeklyHours.map((option, index) => <label key={option.value} className="chip">
+        <input id={index === 0 ? 'interest-hours' : undefined} type="radio" name="weekly_hours" value={option.value} checked={values.hours === option.value} disabled={submitting} onChange={() => update('hours', option.value)} />
+        <span>{option.value}</span><small>{option.hint}</small>
+      </label>)}</div>
+      {errors.hours && <p id="error-hours" className="field-error">{errors.hours}</p>}
+    </fieldset>
+    <fieldset className="field-group" aria-describedby="hint-days">
+      <legend>When usually suits you? <span className="field-optional">Optional</span></legend>
+      <p id="hint-days" className="field-group__hint">Helps us pick a date that works for the group.</p>
+      <div className="day-chips">{availability.map(day => <label key={day} className="day-chip">
+        <input type="checkbox" name="availability" value={day} checked={values.days.includes(day)} disabled={submitting} onChange={() => toggleDay(day)} />
+        <span>{day}</span>
+      </label>)}</div>
     </fieldset>
     {submitError && <p className="form-submit-error" role="alert">We couldn’t confirm your registration. Your details are still here; please try again. You can also contact <a href={`mailto:${registration.contactEmail}`}>{registration.contactEmail}</a>.</p>}
     <button className="button form-submit" type="submit" disabled={submitting}>{submitting ? 'Sending your interest…' : registration.enabled ? 'Register your interest' : 'Preview registration'} <ArrowUpRightIcon size={20} /></button>

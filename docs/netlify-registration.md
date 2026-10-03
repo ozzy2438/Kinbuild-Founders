@@ -36,7 +36,7 @@ The organiser has chosen a project-focused site: no personal name, portrait or b
 
 ## New form fields
 
-The form now also sends `looking_for` (Build, Design, Grow or Open, comma-separated) and `working_style`. Both are declared in the hidden detection form in `index.html`. Netlify only learns new fields at the next deploy with form detection on, so redeploy once after this change and check that both columns appear.
+The form now also sends `looking_for` (Build, Design, Grow or Open, comma-separated), `working_style`, `weekly_hours` and `availability` (optional, comma-separated). All are declared in the hidden detection form in `index.html`. Netlify only learns new fields at the next deploy with form detection on, so redeploy once after this change and check that the new columns appear.
 
 ## Optional: anonymous community totals
 

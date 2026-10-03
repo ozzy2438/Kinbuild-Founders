@@ -4,8 +4,8 @@ import { useEntrance } from '../hooks/useEntrance'
 const steps = [
   { number: '01', title: 'Meet', copy: 'Meet people in Melbourne who are ready to start something and contribute.' },
   { number: '02', title: 'Match', copy: 'Find complementary skills, shared interests and working styles that fit.' },
-  { number: '03', title: 'Build', copy: 'Test a startup idea. Make a first product. See how you work together.' },
-  { number: '04', title: 'Decide', copy: 'Choose whether to keep building. A shared venture starts with a shared decision.' },
+  { number: '03', title: 'Build', copy: 'Spend 14 days on one small goal. Talk to potential customers, make something simple, see how you work together.' },
+  { number: '04', title: 'Decide', copy: 'Decide on the evidence: keep building, change direction or part ways. A shared venture starts with a shared decision.' },
 ]
 
 /** The gateway assembles one piece per step: block, column, beam, then a finished arch. */
