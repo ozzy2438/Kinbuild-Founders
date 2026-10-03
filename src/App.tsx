@@ -1,0 +1,142 @@
+import { lazy, Suspense, useEffect, useState } from 'react'
+import { ArrowDownIcon, ArrowUpRightIcon, CaretDownIcon, ListIcon, UsersThreeIcon, XIcon } from '@phosphor-icons/react'
+import { Artwork } from './components/Artwork'
+import FilmFeature from './components/FilmFeature'
+import InterestForm from './components/InterestForm'
+import { registration } from './registration'
+
+const StoryDialog = lazy(() => import('./components/StoryDialog'))
+const steps = [
+  { number: '01', title: 'Meet', copy: 'Meet people in Melbourne who are ready to start something and contribute.' },
+  { number: '02', title: 'Match', copy: 'Find complementary skills, shared interests and working styles that fit.' },
+  { number: '03', title: 'Build', copy: 'Test a startup idea. Make a first product. See how you work together.' },
+  { number: '04', title: 'Decide', copy: 'Choose whether to keep building. A shared venture starts with a shared decision.' },
+]
+const questions = [
+  ['Do I need a startup idea already?', 'No. Bring a skill, a perspective, or a problem you care about. You can explore an idea with other people. You do need a willingness to contribute and follow through.'],
+  ['Is this just another networking event?', 'The intention is to go beyond introductions. The pilot is being designed around complementary skills and a short, practical working experience, so you can learn what collaboration actually feels like.'],
+  ['What do you mean by working style?', 'Some people enjoy taking the lead, some want to stay hands-on, and others do their best work supporting a team. We want to understand how you like to contribute alongside your skills and interests. These are preferences to discuss, not fixed personality labels.'],
+  ['Do we have to start a company together?', 'No. The point is to find out whether there is a good fit before making a commitment. You can decide to continue, explore another direction, or simply take what you learned.'],
+  ['Will StartBeside connect us with investors?', 'That is part of the longer-term ambition: helping a real team develop a validated idea and become ready for investor conversations. The first pilot focuses on meeting and trying to build together. Investor introductions, funding and mentor participation are not confirmed.'],
+  ['When and where is the pilot?', 'We’re shaping the first pilot in Melbourne. The date, venue, group size and any participation cost will be shared before anyone is asked to commit.'],
+  ['What happens after I register interest?', `${registration.enabled ? 'We’ll review your details.' : 'When registration opens, we’ll review your details.'} If there’s a potential fit, we’ll contact you for a short conversation about your interests, availability and contribution. An invitation to a suitable pilot comes separately. Registering interest does not guarantee a place.${registration.enabled ? '' : ' This website currently lets you preview the form; it does not send or save your details.'}`],
+]
+
+function App() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [storyOpen, setStoryOpen] = useState(false)
+  const [storyLoaded, setStoryLoaded] = useState(false)
+  const [privacyOpen, setPrivacyOpen] = useState(false)
+
+  useEffect(() => {
+    const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setMenuOpen(false) }
+    window.addEventListener('keydown', close)
+    return () => window.removeEventListener('keydown', close)
+  }, [])
+
+  const watch = () => { setStoryLoaded(true); setStoryOpen(true) }
+
+  return <>
+    <a className="skip-link" href="#main">Skip to content</a>
+    <header className="site-header shell">
+      <a className="wordmark" href="#" aria-label="StartBeside home">StartBeside</a>
+      <nav aria-label="Main navigation" className="desktop-nav"><a href="#how-it-works">How it works</a><a href="#the-pilot">The pilot</a><a href="#about">About</a><a className="button button--small" href="#register">Register interest <ArrowUpRightIcon size={17} /></a></nav>
+      <button className="icon-button menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="mobile-nav" onClick={() => setMenuOpen(value => !value)}>{menuOpen ? <XIcon size={25} /> : <ListIcon size={26} />}</button>
+      <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>{[['How it works', '#how-it-works'], ['The pilot', '#the-pilot'], ['About', '#about'], ['Register interest', '#register']].map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}<ArrowUpRightIcon size={18} /></a>)}</nav>
+    </header>
+
+    <main id="main">
+      <section className="hero shell" aria-labelledby="hero-title">
+        <div className="hero__copy">
+          <p className="eyebrow hero__eyebrow">MELBOURNE · FOUNDING PILOT</p>
+          <h1 id="hero-title"><span>Don’t build</span><span>alone.</span></h1>
+          <p className="hero__lead">Meet people in Melbourne. Test a startup idea together. See if you’re a team.</p>
+          <p className="hero__description">A Melbourne community for future co-founders — from a first conversation to a shared venture.</p>
+          <p className="hero__match"><UsersThreeIcon size={25} weight="light" aria-hidden="true" /><span>Matched by skills, sector and how you like to work.</span></p>
+          <div className="hero__actions"><a href="#register" className="button">Register your interest <ArrowUpRightIcon size={19} /></a><a href="#how-it-works" className="quiet-link">See how it works <ArrowDownIcon size={16} /></a></div>
+          <p className="pilot-note">We’re shaping the first Melbourne pilot.<br />Dates and venue will be announced.</p>
+        </div>
+        <div className="hero__visual">
+          <Artwork entrance />
+          <p className="art-caption">Different strengths. Shared direction.</p>
+        </div>
+        <div className="hero__discovery"><p>Good things start with people.</p><a href="#film">See what comes together <ArrowDownIcon size={18} aria-hidden="true" /></a></div>
+      </section>
+
+      <FilmFeature onPlay={watch} />
+
+      <section id="how-it-works" className="process shell" aria-labelledby="process-title">
+        <div className="section-intro"><p className="eyebrow">HOW IT WORKS</p><h2 id="process-title">Meeting someone is easy.<br />Knowing you can build together takes more.</h2></div>
+        <ol className="process__steps">{steps.map(step => <li key={step.number}><span className="step-number">{step.number}</span><h3>{step.title}</h3><p>{step.copy}</p></li>)}</ol>
+        <div className="next-chapter"><p className="eyebrow">AND THEN, WHEN YOU’RE READY</p><div><h3>A real team. A validated idea.<br className="mobile-only" /> A path towards investors.</h3><p>Investor readiness is a longer-term ambition, not a promise of funding.</p></div></div>
+      </section>
+
+      <section id="the-pilot" className="pilot" aria-labelledby="pilot-title">
+        <div className="shell">
+          <div className="pilot__inner"><div><p className="eyebrow">THE MELBOURNE PILOT</p><h2 id="pilot-title">A first meeting.<br />A possible beginning.</h2><p className="pilot__body">A small, guided beginning: meet people, choose who you’d like to work with and try a startup idea together before deciding what comes next.</p><div className="pilot__actions"><a href="#register" className="button button--light">Register your interest <ArrowUpRightIcon size={19} /></a><p>Dates and venue will be announced.</p></div></div><span className="pilot__aside">Start small.<br />Think further.</span></div>
+          <div className="pilot-overview" aria-labelledby="pilot-overview-title">
+            <div className="pilot-overview__heading"><h3 id="pilot-overview-title">Pilot at a glance</h3><p>Planned format · Details to be confirmed</p></div>
+            <dl className="pilot-overview__details">
+              <div><dt>Who it’s for</dt><dd>People who want to try building a startup and can bring a skill, an idea or industry experience. No finished idea required.</dd></div>
+              <div><dt>Where we’ll meet</dt><dd>Melbourne, with an in-person introduction. The date and venue are still being arranged.</dd></div>
+              <div><dt>What we’re planning</dt><dd>A face-to-face meeting, mutual choice of who to work with, and a short trial on one small shared task, with a check-in along the way.</dd></div>
+              <div><dt>What you’ll bring</dt><dd>Time you can realistically commit, a contribution to the shared task and a willingness to follow through. We’ll discuss availability before any invitation.</dd></div>
+              <div><dt>What you’ll leave with</dt><dd>Something you’ve tried together and a clearer decision: keep building, change direction or stop. Finding no suitable match is also a valid outcome.</dd></div>
+            </dl>
+            <p className="pilot-overview__note">Dates, venue, group size, time commitment and any cost will be confirmed before you’re asked to commit. There’s no requirement to start a company and no promise of funding.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="belong shell" aria-labelledby="belong-title"><div className="belong__intro"><p className="eyebrow">THERE’S ROOM FOR YOU</p><h2 id="belong-title">You don’t have to<br />have it all figured out.</h2><p>Early in your career or ready for a new chapter. What matters is what you’re willing to bring.</p></div><div className="belong__rows">
+        <div><span>01</span><div><h3>You have a skill.</h3><p>Code, design, growth, operations. Put what you know into something you can help shape.</p></div><ArrowUpRightIcon size={23} weight="light" aria-hidden="true" /></div>
+        <div><span>02</span><div><h3>You have an idea.</h3><p>A SaaS product, an AI tool, a better way of doing things. Find people to test it with.</p></div><ArrowUpRightIcon size={23} weight="light" aria-hidden="true" /></div>
+        <div><span>03</span><div><h3>You’re ready for a new chapter.</h3><p>Bring your experience, your curiosity and the intention to follow through.</p></div><ArrowUpRightIcon size={23} weight="light" aria-hidden="true" /></div>
+      </div><p className="belong__note">You don’t need a finished idea. You do need a willingness to contribute.</p></section>
+
+      <section id="about" className="about" aria-labelledby="about-title"><div className="shell about__inner"><p className="eyebrow">WHY STARTBESIDE EXISTS</p><div><h2 id="about-title">Good ideas need more<br />than a good first conversation.</h2><div className="about__columns"><p>A conversation can spark an idea. Finding out who you can build it with takes something more: time, shared effort and a chance to try working together.</p><p>StartBeside is creating that space in Melbourne. Our first pilot is being shaped around meeting people with different strengths, choosing who to work with and trying one small task together — so the next step comes from shared experience.</p></div><p className="about__closing">Small beginnings. Real contribution. Something shared.</p></div></div></section>
+
+      <section className="faq shell" aria-labelledby="faq-title"><div className="faq__intro"><p className="eyebrow">A FEW THINGS TO KNOW</p><h2 id="faq-title">Good questions.<br />Honest answers.</h2></div><div className="faq__list">{questions.map(([question, answer]) => <details key={question}><summary>{question}<CaretDownIcon size={20} aria-hidden="true" /></summary><p>{answer}</p></details>)}</div></section>
+
+      <section id="register" className="register" aria-labelledby="register-title">
+        <div className="shell register__inner">
+          <div className="register__copy">
+            <p className="eyebrow">LET’S START WITH YOU</p><h2 id="register-title" tabIndex={-1}>The next chapter<br />could start here.</h2><p>Tell us a little about yourself.<br />A skill. An interest. A place to begin.</p>
+            <div className="registration-next" aria-labelledby="registration-next-title">
+              <h3 id="registration-next-title">What happens next</h3>
+              {!registration.enabled && <p className="registration-next__intro">When registration opens, here’s the planned path.</p>}
+              <ol>
+                <li><h4>Register your interest</h4><p>Tell us what you could bring and what you’d like to explore.</p></li>
+                <li><h4>Have a short conversation</h4><p>If there’s a potential fit, we’ll discuss your availability, interests and how you like to work.</p></li>
+                <li><h4>Receive a separate invitation</h4><p>If there’s a suitable pilot, we’ll send the details before you decide whether to join.</p></li>
+              </ol>
+              <p className="registration-next__note">Registering interest does not guarantee a place. You choose whether to accept an invitation.</p>
+            </div>
+          </div>
+          <InterestForm onPrivacy={() => setPrivacyOpen(true)} />
+        </div>
+      </section>
+
+      <section className="closing shell" aria-label="Closing note"><p>You don’t have to figure<br />it all out alone.</p><a href="#register" className="closing__link" aria-label="Go to registration"><ArrowUpRightIcon size={54} weight="light" /></a></section>
+    </main>
+    <footer className="site-footer shell"><a className="wordmark" href="#" aria-label="StartBeside home">StartBeside</a><span>Built around people. Melbourne.</span><button className="text-button" aria-expanded={privacyOpen} aria-controls="privacy-content" onClick={() => setPrivacyOpen(value => !value)}>Privacy <ArrowUpRightIcon size={15} /></button></footer>
+    <section id="privacy" className="privacy shell" aria-labelledby="privacy-title">
+      <details id="privacy-content" open={privacyOpen} onToggle={event => setPrivacyOpen(event.currentTarget.open)}>
+        <summary id="privacy-title">Your details, treated with care.<CaretDownIcon size={18} /></summary>
+        <div>
+          {registration.enabled ? <>
+            <p>StartBeside uses your name, email, sector and main skill to plan the Melbourne pilot, review potential fit and contact you about your interest. Submissions are stored with Netlify and reviewed by the organiser. They are not published or shared with other participants, mentors or investors without your permission.</p>
+            <p>To ask about your information, request a correction or have it deleted, contact <a href={`mailto:${registration.contactEmail}`}>{registration.contactEmail}</a>. You can also ask us to stop contacting you.</p>
+            <p>There are no analytics or advertising trackers. Fonts and images are served with the site.</p>
+          </> : <>
+            <p>This prototype does not submit, store or share the information entered in the interest form. There are no analytics or advertising trackers. Fonts and images are served with the site.</p>
+            <p>When live registration opens, information will be used to organise the Melbourne pilot and contact participants about StartBeside. Details will not be shared with other participants, mentors or investors without permission. {registration.contactEmail ? <>For questions about your information, contact <a href={`mailto:${registration.contactEmail}`}>{registration.contactEmail}</a>.</> : 'A contact for access or deletion requests will be provided before collecting real registrations.'}</p>
+          </>}
+        </div>
+      </details><p className="footer-small">StartBeside · A shared beginning.</p>
+    </section>
+    {storyLoaded && <Suspense fallback={<div className="story-loading" role="status">Opening the film…</div>}><StoryDialog open={storyOpen} onClose={() => setStoryOpen(false)} /></Suspense>}
+  </>
+}
+
+export default App

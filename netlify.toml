@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24.19.0"
+
+# Public, approved contact; this is not a credential.
+[context.production.environment]
+  VITE_REGISTRATION_MODE = "netlify"
+  VITE_CONTACT_EMAIL = "osmanorka@gmail.com"
+
+# Preview deployments do not collect registrations.
+[context.deploy-preview.environment]
+  VITE_REGISTRATION_MODE = "preview"
+
+[context.branch-deploy.environment]
+  VITE_REGISTRATION_MODE = "preview"

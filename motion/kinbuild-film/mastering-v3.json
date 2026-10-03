@@ -1,0 +1,39 @@
+{
+  "input": "Native Tesseract toy-kit export",
+  "target": {
+    "integrated_lufs": -15,
+    "true_peak_dbtp": -1.5,
+    "lra": 9
+  },
+  "pass_one": {
+    "input_i": "-16.84",
+    "input_tp": "-1.89",
+    "input_lra": "2.50",
+    "input_thresh": "-26.99",
+    "output_i": "-15.20",
+    "output_tp": "-1.50",
+    "output_lra": "2.20",
+    "output_thresh": "-25.33",
+    "normalization_type": "dynamic",
+    "target_offset": "0.20"
+  },
+  "pass_two_filter": "loudnorm=I=-15:TP=-1.5:LRA=9:measured_I=-16.84:measured_TP=-1.89:measured_LRA=2.50:measured_thresh=-26.99:offset=0.20:linear=true",
+  "final_encoded": {
+    "input_i": "-15.21",
+    "input_tp": "-1.52",
+    "input_lra": "2.30",
+    "input_thresh": "-25.32",
+    "output_i": "-15.24",
+    "output_tp": "-1.50",
+    "output_lra": "1.90",
+    "output_thresh": "-25.34",
+    "normalization_type": "dynamic",
+    "target_offset": "0.24"
+  },
+  "approved_narration": {
+    "source": "motion/kinbuild-film/.tesseract-work/v2/narration-final.wav",
+    "sha256": "ba3120ed8df05cd1cac14ce02c3361895def04c9d7e6460de5a4a87849614a13",
+    "status": "User explicitly approved this voice; preserve source and timing in v3."
+  },
+  "output": "1280x720, 24 fps, H.264 CRF 22, AAC 192 kb/s 48 kHz stereo"
+}

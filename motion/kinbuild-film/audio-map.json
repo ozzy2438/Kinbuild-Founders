@@ -1,0 +1,67 @@
+{
+  "revision": "v2 \u2014 voice and original music",
+  "voice": {
+    "source": "Kokoro v1.0 / af_heart",
+    "language": "en-us",
+    "speed": 0.9,
+    "phrases": 4,
+    "cut_policy": "Complete generated phrases retained; no internal word edits or time stretching."
+  },
+  "music": {
+    "title": "A Shared Beginning",
+    "origin": "Original score and locally synthesized instruments; no external recordings or samples",
+    "bpm": 116.363636,
+    "stems": [
+      "keys",
+      "pad",
+      "pulse",
+      "bass",
+      "drums"
+    ]
+  },
+  "timing_map": [
+    {
+      "source_seconds": 0,
+      "edit_seconds": 0,
+      "event": "Opening D-minor add-nine chord",
+      "visual": "An idea / initial stone approach",
+      "verification": "Authored score timing; listening not available"
+    },
+    {
+      "source_seconds": 4.125,
+      "edit_seconds": 4.125,
+      "event": "Bass and half-time percussion enter; B-flat major-seven",
+      "visual": "Lead-in to three strengths at 4.4 s",
+      "verification": "Authored score timing; waveform inspected"
+    },
+    {
+      "source_seconds": 8.25,
+      "edit_seconds": 8.25,
+      "event": "Arpeggiated pulse enters in F add-nine",
+      "visual": "Meet / Match / Build / Decide sequence from 8.2 s",
+      "verification": "Authored score timing; waveform inspected"
+    },
+    {
+      "source_seconds": 12.375,
+      "edit_seconds": 12.375,
+      "event": "C add-nine suspension",
+      "visual": "Product to shared venture and investor readiness",
+      "verification": "Authored score timing; waveform inspected"
+    },
+    {
+      "source_seconds": 16.5,
+      "edit_seconds": 16.5,
+      "event": "F major-nine resolution and rhythmic release",
+      "visual": "Closing brand scene",
+      "verification": "Authored score timing; waveform inspected"
+    },
+    {
+      "source_seconds": 18.655,
+      "edit_seconds": 18.655,
+      "event": "Narration finishes; music returns to foreground",
+      "visual": "Final CTA hold",
+      "verification": "Generated phrase duration; timed envelope"
+    }
+  ],
+  "review_limit": "Cannot audition in this environment. Musical feel, pronunciation and subjective mix balance are not listening-verified."
+}

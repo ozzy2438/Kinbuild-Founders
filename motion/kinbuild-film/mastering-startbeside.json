@@ -1,0 +1,30 @@
+{
+  "cli": "0.3.1",
+  "pass_one": {
+    "input_i": "-17.02",
+    "input_tp": "-1.87",
+    "input_lra": "2.50",
+    "input_thresh": "-27.19",
+    "output_i": "-15.24",
+    "output_tp": "-1.50",
+    "output_lra": "1.80",
+    "output_thresh": "-25.36",
+    "normalization_type": "dynamic",
+    "target_offset": "0.24"
+  },
+  "pass_two_filter": "loudnorm=I=-15:TP=-1.5:LRA=9:measured_I=-17.02:measured_TP=-1.87:measured_LRA=2.50:measured_thresh=-27.19:offset=0.24:linear=true",
+  "final_encoded": {
+    "input_i": "-15.15",
+    "input_tp": "-1.51",
+    "input_lra": "2.00",
+    "input_thresh": "-25.28",
+    "output_i": "-15.16",
+    "output_tp": "-1.50",
+    "output_lra": "1.80",
+    "output_thresh": "-25.29",
+    "normalization_type": "dynamic",
+    "target_offset": "0.16"
+  },
+  "output": "1920x1080, 24 fps, H.264 CRF 17, AAC 192k stereo",
+  "audition": "Waveform and technical checks only; not listening-confirmed"
+}

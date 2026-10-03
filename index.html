@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f4f0" />
+    <link rel="icon" type="image/webp" href="/images/startbeside-arch.webp" />
+    <meta name="description" content="Find people you can build a startup with. StartBeside is shaping a Melbourne pilot for future co-founders, matched by skills, sector and how you like to work." />
+    <meta property="og:title" content="StartBeside — Don't build alone." />
+    <meta property="og:description" content="Different strengths. Shared direction. A Melbourne community for future co-founders." />
+    <meta property="og:type" content="website" />
+    <meta name="color-scheme" content="light" />
+    <title>StartBeside — Don't build alone.</title>
+  </head>
+  <body>
+    <!-- Netlify detects the React form's fields in the built HTML. Keep these
+         names aligned with InterestForm.tsx; this form is never shown. -->
+    <form name="startbeside-interest" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="startbeside-interest" />
+      <input name="name" />
+      <input type="email" name="email" />
+      <input name="sector" />
+      <input name="skill" />
+      <input name="bot-field" />
+    </form>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

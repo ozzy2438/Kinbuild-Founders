@@ -1,0 +1,32 @@
+{
+  "voice": "Kokoro af_heart \u2014 original synthetic English narration",
+  "speed": 0.9,
+  "sampleRate": 24000,
+  "duration": 20.0,
+  "cues": [
+    {
+      "text": "Great ideas don't grow alone. They grow with people who see things differently.",
+      "start": 0.6,
+      "end": 5.165,
+      "file": "voice-1.wav"
+    },
+    {
+      "text": "At Kinbuild, find your people, and turn that first idea into a real startup.",
+      "start": 5.75,
+      "end": 10.913,
+      "file": "voice-2.wav"
+    },
+    {
+      "text": "Start small, build together, and see how far you can go.",
+      "start": 11.5,
+      "end": 14.956,
+      "file": "voice-3.wav"
+    },
+    {
+      "text": "Kinbuild. Don't build alone.",
+      "start": 16.65,
+      "end": 18.655,
+      "file": "voice-4.wav"
+    }
+  ]
+}

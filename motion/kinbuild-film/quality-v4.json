@@ -1,0 +1,43 @@
+{
+  "revision": "v4 \u2014 native 1080p picture",
+  "source_dimensions": [
+    1920,
+    1080
+  ],
+  "source_unique_frames": 240,
+  "source_pose_rate": 12,
+  "output": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "24/1",
+        "time_base": "1/12288",
+        "start_time": "0.000000",
+        "duration": "20.000000"
+      },
+      {
+        "codec_name": "aac",
+        "sample_rate": "48000",
+        "r_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_time": "0.000000",
+        "duration": "20.000000"
+      }
+    ]
+  },
+  "native_intermediate": "ProRes 4444",
+  "source_codec": "H.264 CRF 12",
+  "final_codec": "H.264 CRF 17",
+  "spatial_upscaling": false,
+  "post_denoising": false,
+  "motion_blur": false,
+  "depth_of_field": false,
+  "audio": "Copied approved v3 AAC packets; no resynthesis, remix or reencoding",
+  "audio_packet_hash_before": "SHA256=7035432b8da4884d7ed33008df37c6c03fa68dd430f1a28efefb22d630a51743",
+  "audio_packet_hash_after": "SHA256=7035432b8da4884d7ed33008df37c6c03fa68dd430f1a28efefb22d630a51743",
+  "film_sha256": "6a6aefcba41ea1d3b286b9d4dfd44ad6cd5be9fd70ff08eac20e202887cf0d96"
+}

@@ -1,0 +1,118 @@
+{
+  "revision": "v3 \u2014 toy-kit assembly and added rhythmic momentum",
+  "voice": {
+    "source": "Kokoro v1.0 / af_heart",
+    "language": "en-us",
+    "speed": 0.9,
+    "phrases": 4,
+    "cut_policy": "Complete generated phrases retained; no internal word edits or time stretching.",
+    "approval": "User approved v2 voice; identical source SHA-256 and phrase timings preserved."
+  },
+  "music": {
+    "title": "A Shared Beginning",
+    "origin": "Original score and locally synthesized instruments; no external recordings or samples",
+    "bpm": 116.363636,
+    "stems": [
+      "keys",
+      "pad",
+      "pulse",
+      "bass",
+      "drums",
+      "momentum"
+    ],
+    "changes": "Original tempo, harmony and melody retained. Added sixteenth-note shaker, sparse clap and kick pickup; original pulse gain multiplied by 1.16.",
+    "momentum_preparation": "2.2 kHz presence dip \u22122 dB, +10.5 dB gain on the intentionally quiet generated raw stem."
+  },
+  "timing_map": [
+    {
+      "source_seconds": 0,
+      "edit_seconds": 0,
+      "event": "Opening D-minor add-nine chord",
+      "visual": "Single brick: an idea waiting for its other pieces",
+      "verification": "Authored score timing; listening not available"
+    },
+    {
+      "source_seconds": 4.125,
+      "edit_seconds": 4.125,
+      "event": "Bass and half-time percussion enter; B-flat major-seven",
+      "visual": "Cut into the toy founders assembling around their table",
+      "verification": "Authored score timing; waveform inspected"
+    },
+    {
+      "source_seconds": 8.25,
+      "edit_seconds": 8.25,
+      "event": "Arpeggiated pulse enters in F add-nine",
+      "visual": "Cut to the other side; shared prototype construction",
+      "verification": "Authored score timing; waveform inspected"
+    },
+    {
+      "source_seconds": 12.375,
+      "edit_seconds": 12.375,
+      "event": "C add-nine suspension",
+      "visual": "Wide reveal and start of the gateway assembly",
+      "verification": "Authored score timing; waveform inspected"
+    },
+    {
+      "source_seconds": 16.5,
+      "edit_seconds": 16.5,
+      "event": "F major-nine resolution and rhythmic release",
+      "visual": "Completed gateway and team; native brand message enters",
+      "verification": "Authored score timing; waveform inspected"
+    },
+    {
+      "source_seconds": 18.655,
+      "edit_seconds": 18.655,
+      "event": "Narration finishes; music returns to foreground",
+      "visual": "Final startup message holds",
+      "verification": "Generated phrase duration; timed envelope"
+    }
+  ],
+  "review_limit": "User approved the v2 sound. Added rhythm and final v3 balance are technically measured and waveform-inspected; this environment cannot audition audio.",
+  "effects": {
+    "origin": "Original procedural tactile clicks; no external samples",
+    "source_in": 0,
+    "project_start": 0,
+    "cue_seconds_and_gain": [
+      [
+        2.45,
+        0.03
+      ],
+      [
+        4.53,
+        0.024
+      ],
+      [
+        5.33,
+        0.025
+      ],
+      [
+        6.35,
+        0.022
+      ],
+      [
+        8.25,
+        0.025
+      ],
+      [
+        10.41,
+        0.02
+      ],
+      [
+        13.15,
+        0.022
+      ],
+      [
+        14.79,
+        0.02
+      ],
+      [
+        15.62,
+        0.024
+      ],
+      [
+        16.36,
+        0.04
+      ]
+    ]
+  }
+}

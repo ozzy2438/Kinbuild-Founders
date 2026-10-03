@@ -1,0 +1,42 @@
+[
+  {
+    "path": "motion/kinbuild-film/Kinbuild.tsrct",
+    "bytes": 58344816,
+    "sha256": "9f99a812f60b35032aa7937ed1d36f3d163c4bafffab5026f5f1de561c63c8d9"
+  },
+  {
+    "path": "motion/kinbuild-film/Kinbuild-film.mp4",
+    "bytes": 8686253,
+    "sha256": "6a6aefcba41ea1d3b286b9d4dfd44ad6cd5be9fd70ff08eac20e202887cf0d96"
+  },
+  {
+    "path": "motion/kinbuild-film/Kinbuild-score.mid",
+    "bytes": 1039,
+    "sha256": "0b766d1d32f37c49427d827988c4cbc36fa6b7e6e3a930f6cc9d77d71be96387"
+  },
+  {
+    "path": "motion/kinbuild-toykit/Kinbuild-toykit-HD.blend",
+    "bytes": 3760964,
+    "sha256": "1744100d6b285b3b0b672c1003f582d0d7941a7735cb2d0bf23fa3bfa1a8ef07"
+  },
+  {
+    "path": "public/media/kinbuild-poster.webp",
+    "bytes": 114834,
+    "sha256": "756f589c590f51d506c7e5a696930a17a22364e23462729dfa934d5463527848"
+  },
+  {
+    "path": "artifacts/Kinbuild-HD.html",
+    "bytes": 13740761,
+    "sha256": "d65640df5aeba802aa5d4cf6c7795773adfb12e0997ae5520555acaa4aa2c3fd"
+  },
+  {
+    "path": "artifacts/Kinbuild-film-HD.mp4",
+    "bytes": 8686253,
+    "sha256": "6a6aefcba41ea1d3b286b9d4dfd44ad6cd5be9fd70ff08eac20e202887cf0d96"
+  },
+  {
+    "path": "artifacts/Kinbuild-HD-karsilastirma.png",
+    "bytes": 484501,
+    "sha256": "a1ffa9b792d8a36c2551dd44a1421c24765829687e3e9152d4dae7603c4de0fe"
+  }
+]
