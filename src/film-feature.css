@@ -17,11 +17,9 @@
   .film-feature__play { width: 100%; position: relative; display: block; padding: 0; border: 0; text-align: left; background: var(--stone); }
   .film-feature__play img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; }
   .film-feature__play:focus-visible { outline: 3px solid var(--ink); outline-offset: -7px; }
-  .film-feature__play-label { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 18px; padding: 15px 24px 15px 16px; border: 1px solid #ffffff28; border-radius: 5px; background: var(--ink); color: var(--paper); font-size: 15px; white-space: nowrap; box-shadow: 0 8px 24px #1919191a; transition: background .2s, scale .25s; }
-  .film-feature__play-icon { display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid #f5f4f05c; border-radius: 50%; padding-left: 3px; transition: background .2s, color .2s; }
-  .film-feature__duration { display: block; font-size: 11px; color: #cccac2; margin-top: 2px; }
-  .film-feature__play:hover .film-feature__play-label { background: #30302b; scale: 1.04; }
-  .film-feature__play:hover .film-feature__play-icon { background: var(--paper); color: var(--ink); }
+  /* Just the play mark; the button is still named “Watch the film” for assistive technology. */
+  .film-feature__play-label { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 76px; height: 76px; padding-left: 4px; border: 1px solid #ffffff33; border-radius: 50%; background: #191919d9; color: var(--paper); box-shadow: 0 10px 28px -10px #19191966; transform: translate(-50%, -50%); transition: background .2s, scale .25s; }
+  .film-feature__play:hover .film-feature__play-label { background: var(--accent); scale: 1.06; }
   .film-feature__caption { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 26px; border-top: 1px solid #d8d5cd80; background: #eeece6; font-size: 12px; }
   .film-feature__caption > span { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
   .film-feature__outro { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-top: 27px; font-size: 13px; color: var(--muted); }
@@ -45,10 +43,8 @@
     .film-feature__bar { padding: 13px 14px; font-size: 8px; }
     .film-feature__bar > span:last-child { font-size: 0; }
     .film-feature__bar > span:last-child::after { content: '00:20'; font-size: 10px; letter-spacing: .02em; }
-    .film-feature__play-label { top: auto; left: 12px; bottom: 12px; transform: none; padding: 9px 13px 9px 9px; gap: 10px; font-size: 12px; }
-    .film-feature__play-icon { width: 32px; height: 32px; }
-    .film-feature__play-icon svg { width: 15px; height: 15px; }
-    .film-feature__duration { display: none; }
+    .film-feature__play-label { width: 54px; height: 54px; padding-left: 3px; }
+    .film-feature__play-label svg { width: 21px; height: 21px; }
     .film-feature__caption { align-items: flex-start; flex-direction: column; gap: 5px; padding: 13px 14px; font-size: 11px; }
     .film-feature__caption > span { font-size: 10px; gap: 6px; }
     .film-feature__caption > span svg { width: 13px; }

@@ -115,7 +115,7 @@ export default function FilmFeature({ onPlay }: { onPlay: () => void }) {
         <button className={`film-feature__play ${looping ? 'is-looping' : ''}`} onClick={play} onFocus={resume} aria-label="Watch the film" aria-haspopup="dialog" aria-describedby="film-feature-note">
           <img src="/media/startbeside-team.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Toy founders bringing their different skills together around a shared worktable." />
           {loopSrc && <video ref={video} className="film-feature__loop" src={loopSrc} poster="/media/startbeside-team.webp" muted loop playsInline preload="auto" disablePictureInPicture disableRemotePlayback aria-hidden="true" tabIndex={-1} onLoadedMetadata={event => { if (event.currentTarget.currentTime < 1) event.currentTarget.currentTime = 6 }} onPlaying={() => setLooping(true)} />}
-          <span className="film-feature__play-label"><span className="film-feature__play-icon"><PlayIcon size={23} weight="fill" aria-hidden="true" /></span><span>Watch the film <span className="film-feature__duration">20 seconds, together.</span></span></span>
+          <span className="film-feature__play-label" aria-hidden="true"><PlayIcon size={28} weight="fill" /></span>
         </button>
         <div className="film-feature__caption">
           <p>It starts with people. It could become a startup.</p>
