@@ -47,6 +47,15 @@
   .closing__word--top { --from-y: -56px; }
   .is-gathered > .closing__word { opacity: 1; transform: none; }
 
+  /* After registering, the gateway completes: both columns arrive, the beam lands, then the check. */
+  .success-gate { position: relative; isolation: isolate; display: block; width: 150px; aspect-ratio: 1; margin: -12px 0 20px -14px; }
+  .success-gate::after { content: ''; position: absolute; z-index: -1; left: 10%; right: 4%; bottom: 3%; height: 9%; border-radius: 50%; background: radial-gradient(closest-side, #19191928, #19191900); animation: gate-ground .7s .25s ease both; }
+  .success-gate__stone { position: absolute; inset: 0; width: 100%; height: 100%; user-select: none; }
+  .success-gate__stone--left { animation: stone-in-left .65s cubic-bezier(.2,.75,.25,1) both; }
+  .success-gate__stone--right { animation: stone-in-right .65s .12s cubic-bezier(.2,.75,.25,1) both; }
+  .success-gate__stone--top { animation: beam-drop .6s .55s cubic-bezier(.34,1.45,.64,1) both; }
+  .success-gate__mark { position: absolute; right: -12px; bottom: 2px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: white; box-shadow: 0 0 0 4px var(--stone); animation: success-pop .5s 1.15s cubic-bezier(.2,.9,.3,1.3) both; }
+
   /* 9 — Reading progress as a small gateway. */
   .reading-gate { position: fixed; z-index: 20; right: 20px; bottom: 20px; display: grid; place-items: center; width: 54px; height: 54px; border: 1px solid var(--line); border-radius: 50%; background: #fbfaf7e6; box-shadow: 0 10px 26px -16px #19191966; pointer-events: none; opacity: 0; transform: translateY(10px) scale(.92); transition: opacity .4s ease, transform .5s cubic-bezier(.2,.8,.2,1); }
   .reading-gate.is-shown { opacity: 1; transform: none; }
@@ -58,6 +67,10 @@
   .reading-gate.is-complete .reading-gate__beam { fill: var(--accent); }
 }
 
+@keyframes stone-in-left { from { opacity: 0; transform: translate(-24%, 5%) rotate(-7deg); } }
+@keyframes stone-in-right { from { opacity: 0; transform: translate(24%, 5%) rotate(7deg); } }
+@keyframes beam-drop { from { opacity: 0; transform: translateY(-38%) rotate(-3deg); } 30% { opacity: 1; } }
+@keyframes gate-ground { from { opacity: 0; transform: scaleX(.6); } }
 @keyframes tw-blink { 0% { opacity: 1; } 50% { opacity: 0; } }
 @keyframes gate-whole { 0% { opacity: 1; } 4%, 100% { opacity: 0; } }
 @keyframes gate-left { 0% { opacity: 0; transform: none; } 4% { opacity: 1; } 100% { opacity: 1; transform: translate3d(-9%, 4%, 40px) rotateY(-20deg) rotateZ(-5deg); } }
@@ -100,6 +113,8 @@
     .closing__word--left { --from-x: -30px; }
     .closing__word--right { --from-x: 30px; }
     .closing__word--top { --from-y: -36px; }
+    .success-gate { width: 124px; margin: -10px 0 16px -11px; }
+    .success-gate__mark { width: 28px; height: 28px; }
     .reading-gate { right: 14px; bottom: 14px; width: 46px; height: 46px; }
     .reading-gate svg { width: 29px; height: 22px; }
   }
