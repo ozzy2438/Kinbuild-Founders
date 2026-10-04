@@ -4,6 +4,7 @@ import { ArrowDownIcon, ArrowUpRightIcon, CaretDownIcon, ListIcon, UsersThreeIco
 import { Artwork } from './components/Artwork'
 import FilmFeature from './components/FilmFeature'
 import HeroHeadline from './components/HeroHeadline'
+import Logo from './components/Logo'
 import InterestForm from './components/InterestForm'
 import PieceFinder from './components/PieceFinder'
 import ProcessSteps from './components/ProcessSteps'
@@ -60,7 +61,7 @@ function App() {
   return <>
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="site-header shell">
-      <a className="wordmark" href="#" aria-label="StartBeside home">StartBeside</a>
+      <a className="wordmark" href="#" aria-label="StartBeside home"><Logo assemble /></a>
       <nav aria-label="Main navigation" className="desktop-nav"><a href="#your-piece">Your piece</a><a href="#how-it-works">How it works</a><a href="#the-pilot">The pilot</a><a href="#about">About</a><a className="button button--small" href="#register">Register interest <ArrowUpRightIcon size={17} /></a></nav>
       <button className="icon-button menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="mobile-nav" onClick={() => setMenuOpen(value => !value)}>{menuOpen ? <XIcon size={25} /> : <ListIcon size={26} />}</button>
       <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>{[['Your piece', '#your-piece'], ['How it works', '#how-it-works'], ['The pilot', '#the-pilot'], ['About', '#about'], ['Register interest', '#register']].map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}<ArrowUpRightIcon size={18} /></a>)}</nav>
@@ -142,7 +143,7 @@ function App() {
 
       <section className="closing shell" aria-label="Closing note"><p ref={closing.ref} className={closing.entered ? 'is-gathered' : undefined}>{closingLines.map((line, l) => <Fragment key={l}>{l > 0 && <br />}{line.map(([word, from], i) => <Fragment key={word}>{i > 0 && ' '}<span className={`closing__word closing__word--${from}`} style={{ '--i': closingLines.slice(0, l).flat().length + i } as CSSProperties}>{word}</span></Fragment>)}</Fragment>)}</p><a href="#register" className="closing__link" aria-label="Go to registration"><ArrowUpRightIcon size={54} weight="light" /></a></section>
     </main>
-    <footer className="site-footer shell"><a className="wordmark" href="#" aria-label="StartBeside home">StartBeside</a><span>Built around people. Melbourne.</span>{registration.contactEmail && <a className="footer-contact" href={`mailto:${registration.contactEmail}`}>{registration.contactEmail}</a>}<button className="text-button" aria-expanded={privacyOpen} aria-controls="privacy-content" onClick={() => setPrivacyOpen(value => !value)}>Privacy <ArrowUpRightIcon size={15} /></button></footer>
+    <footer className="site-footer shell"><a className="wordmark" href="#" aria-label="StartBeside home"><Logo /></a><span>Built around people. Melbourne.</span>{registration.contactEmail && <a className="footer-contact" href={`mailto:${registration.contactEmail}`}>{registration.contactEmail}</a>}<button className="text-button" aria-expanded={privacyOpen} aria-controls="privacy-content" onClick={() => setPrivacyOpen(value => !value)}>Privacy <ArrowUpRightIcon size={15} /></button></footer>
     <section id="privacy" className="privacy shell" aria-labelledby="privacy-title">
       <details id="privacy-content" open={privacyOpen} onToggle={event => setPrivacyOpen(event.currentTarget.open)}>
         <summary id="privacy-title">Your details, treated with care.<CaretDownIcon size={18} /></summary>
