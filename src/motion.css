@@ -1,0 +1,127 @@
+/*
+ * Motion that tells the gateway story: separate pieces coming together.
+ * Only transform and opacity move. Every effect is decorative: the text is
+ * always in the page, and reduced-motion preferences switch all of it off.
+ */
+
+@layer components {
+  /* 1 · 4 — Typewriter. The untyped text is in the page, only painted transparent. */
+  ::highlight(typewriter-hidden) { color: transparent; }
+  .hero__title, .hero__lead, .film-feature__description { position: relative; }
+  .tw-cursor { position: absolute; left: 0; top: 0; z-index: 1; width: var(--tw-w, 2px); height: var(--tw-h, 1em); border-radius: 1px; background: var(--accent); opacity: 0; pointer-events: none; transform: translate(var(--tw-x, 0), var(--tw-y, 0)); }
+  .tw-cursor.is-on { opacity: 1; }
+  .tw-cursor.is-waiting { animation: tw-blink 1.05s steps(1, end) infinite; }
+  .tw-cursor.is-morphing { border-radius: 24%; transition: transform .46s cubic-bezier(.65,0,.25,1), width .46s cubic-bezier(.65,0,.25,1), height .46s cubic-bezier(.65,0,.25,1), border-radius .3s; }
+  .tw-cursor.is-gone { opacity: 0; animation: none; transition: opacity .3s ease; }
+  .hero__title .tw-cursor { --tw-w: .072em; }
+  .tw-baseline { display: inline-block; width: 0; height: 0; vertical-align: baseline; }
+
+  /* 2 — The hero gateway. The opening pieces only exist where scroll timelines do. */
+  /* Separated stones may pass the screen edge; they never widen the page. */
+  main { overflow-x: clip; }
+  .artwork__open { display: none; position: absolute; inset: 0; pointer-events: none; perspective: 1000px; }
+  .artwork__open-piece { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; backface-visibility: hidden; }
+  .artwork__open-piece--left { transform-origin: 30% 70%; }
+  .artwork__open-piece--right { transform-origin: 78% 66%; }
+  .artwork__open-piece--top { transform-origin: 50% 20%; }
+
+  /* 5 — Finder stones approach from depth, then drift very slightly with the scroll. */
+  .finder-piece { perspective: 1100px; }
+  .finder__stage:not(.has-entered) .finder-piece--left .finder-piece__move { transform: translate3d(-9%, 6%, -560px) rotate(-9deg); }
+  .finder__stage:not(.has-entered) .finder-piece--right .finder-piece__move { transform: translate3d(9%, 7%, -620px) rotate(9deg); }
+  .finder__stage:not(.has-entered) .finder-piece--top .finder-piece__move { transform: translate3d(0, -14%, -700px) rotate(-6deg); }
+  .finder__stage.is-idle.has-entered .finder-piece__move { transition: transform 1.5s cubic-bezier(.16,.84,.24,1), opacity .9s ease; transition-delay: calc(var(--i) * 170ms); }
+
+  /* 7 — Pilot: each line of the heading rises from behind a mask; the boundaries settle in. */
+  .reveal-line { display: block; overflow: clip; padding-block: .08em .12em; margin-block: -.08em -.12em; }
+  .reveal-line > span { display: block; transform: translateY(130%); transition: transform 1s cubic-bezier(.2,.7,.1,1); }
+  .reveal-line + .reveal-line > span { transition-delay: .14s; }
+  .is-revealed .reveal-line > span { transform: none; }
+  .pilot-boundaries li { opacity: 0; transform: translateY(14px) scale(.9); transition: opacity .45s ease, transform .75s cubic-bezier(.34,1.56,.64,1); transition-delay: calc(var(--i) * 110ms + .1s); }
+  .pilot-boundaries.is-revealed li { opacity: 1; transform: none; }
+
+  /* 8 — The closing words gather from three directions, like the stones. */
+  .closing__word { display: inline-block; opacity: 0; transform: translate(var(--from-x, 0), var(--from-y, 0)); transition: opacity .7s ease, transform 1.1s cubic-bezier(.2,.75,.2,1); transition-delay: calc(var(--i) * 70ms); }
+  .closing__word--left { --from-x: -72px; }
+  .closing__word--right { --from-x: 72px; }
+  .closing__word--top { --from-y: -56px; }
+  .is-gathered > .closing__word { opacity: 1; transform: none; }
+
+  /* After registering, the gateway completes: both columns arrive, the beam lands, then the check. */
+  .success-gate { position: relative; isolation: isolate; display: block; width: 150px; aspect-ratio: 1; margin: -12px 0 20px -14px; }
+  .success-gate::after { content: ''; position: absolute; z-index: -1; left: 10%; right: 4%; bottom: 3%; height: 9%; border-radius: 50%; background: radial-gradient(closest-side, #19191928, #19191900); animation: gate-ground .7s .25s ease both; }
+  .success-gate__stone { position: absolute; inset: 0; width: 100%; height: 100%; user-select: none; }
+  .success-gate__stone--left { animation: stone-in-left .65s cubic-bezier(.2,.75,.25,1) both; }
+  .success-gate__stone--right { animation: stone-in-right .65s .12s cubic-bezier(.2,.75,.25,1) both; }
+  .success-gate__stone--top { animation: beam-drop .6s .55s cubic-bezier(.34,1.45,.64,1) both; }
+  .success-gate__mark { position: absolute; right: -12px; bottom: 2px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: white; box-shadow: 0 0 0 4px var(--stone); animation: success-pop .5s 1.15s cubic-bezier(.2,.9,.3,1.3) both; }
+
+  /* 9 — Reading progress as a small gateway. */
+  .reading-gate { position: fixed; z-index: 20; right: 20px; bottom: 20px; display: grid; place-items: center; width: 54px; height: 54px; border: 1px solid var(--line); border-radius: 50%; background: #fbfaf7e6; box-shadow: 0 10px 26px -16px #19191966; pointer-events: none; opacity: 0; transform: translateY(10px) scale(.92); transition: opacity .4s ease, transform .5s cubic-bezier(.2,.8,.2,1); }
+  .reading-gate.is-shown { opacity: 1; transform: none; }
+  .reading-gate svg { overflow: visible; }
+  .reading-gate__piece { fill: transparent; stroke: #b5b2a9; stroke-width: 2; stroke-dasharray: 4 4; transform-box: fill-box; transform-origin: center; transform: translateY(-7px); opacity: .7; transition: fill .4s, stroke .4s, transform .55s cubic-bezier(.34,1.56,.64,1), opacity .4s; }
+  .reading-gate__piece.is-placed { fill: var(--stone); stroke: var(--ink); stroke-dasharray: none; transform: none; opacity: 1; }
+  .reading-gate__beam.is-placed { fill: #3b3b37; }
+  .reading-gate.is-complete .reading-gate__piece { fill: var(--accent-wash); stroke: var(--accent); }
+  .reading-gate.is-complete .reading-gate__beam { fill: var(--accent); }
+}
+
+@keyframes stone-in-left { from { opacity: 0; transform: translate(-24%, 5%) rotate(-7deg); } }
+@keyframes stone-in-right { from { opacity: 0; transform: translate(24%, 5%) rotate(7deg); } }
+@keyframes beam-drop { from { opacity: 0; transform: translateY(-38%) rotate(-3deg); } 30% { opacity: 1; } }
+@keyframes gate-ground { from { opacity: 0; transform: scaleX(.6); } }
+@keyframes tw-blink { 0% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes gate-whole { 0% { opacity: 1; } 4%, 100% { opacity: 0; } }
+@keyframes gate-left { 0% { opacity: 0; transform: none; } 4% { opacity: 1; } 100% { opacity: 1; transform: translate3d(-9%, 4%, 40px) rotateY(-20deg) rotateZ(-5deg); } }
+@keyframes gate-right { 0% { opacity: 0; transform: none; } 4% { opacity: 1; } 100% { opacity: 1; transform: translate3d(6%, 5%, 20px) rotateY(20deg) rotateZ(5deg); } }
+@keyframes gate-top { 0% { opacity: 0; transform: none; } 4% { opacity: 1; } 100% { opacity: 1; transform: translate3d(-2%, -14%, 50px) rotateX(18deg) rotateZ(-4deg); } }
+@keyframes film-tilt { from { transform: perspective(1600px) rotateX(15deg); } to { transform: none; } }
+@keyframes stone-drift { from { transform: translateY(var(--drift)); } to { transform: translateY(calc(var(--drift) * -1)); } }
+
+/* Scroll-linked motion where the browser supports it; elsewhere the arrival
+   effects above still run once when each section comes into view. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @layer components {
+      .hero .artwork { view-timeline: --gate block; }
+      .hero .artwork__open { display: block; }
+      .hero .artwork__assembled { animation: gate-whole linear both; animation-timeline: --gate; animation-range: exit 0% exit 80%; }
+      .hero .artwork__open-piece--left { animation: gate-left linear both; animation-timeline: --gate; animation-range: exit 0% exit 80%; }
+      .hero .artwork__open-piece--right { animation: gate-right linear both; animation-timeline: --gate; animation-range: exit 0% exit 80%; }
+      .hero .artwork__open-piece--top { animation: gate-top linear both; animation-timeline: --gate; animation-range: exit 0% exit 80%; }
+
+      .film-feature__reveal:not(.is-settled):not(:focus-within) { transition: none; animation: film-tilt linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
+
+      .finder__stage { view-timeline: --finder block; }
+      .finder-piece { animation: stone-drift linear both; animation-timeline: --finder; animation-range: cover 0% cover 100%; }
+      .finder-piece--left { --drift: 10px; }
+      .finder-piece--right { --drift: -8px; }
+      .finder-piece--top { --drift: 16px; }
+    }
+  }
+}
+
+@layer responsive {
+  @media (max-width: 760px) {
+    /* Stacked steps turn in one by one as each is reached. */
+    .process__steps li { transition-delay: .05s; }
+    .process__steps.is-live li:not(.is-in) { opacity: 0; transform: perspective(1100px) rotateY(-70deg); }
+    .finder__stage:not(.has-entered) .finder-piece--left:not(.is-mine) .finder-piece__move { transform: translate3d(-6%, 5%, -420px) rotate(-8deg); }
+    .finder__stage:not(.has-entered) .finder-piece--right:not(.is-mine) .finder-piece__move { transform: translate3d(5%, 6%, -460px) rotate(8deg); }
+    .finder__stage:not(.has-entered) .finder-piece--top:not(.is-mine) .finder-piece__move { transform: translate3d(0, -10%, -520px) rotate(-5deg); }
+    .closing__word--left { --from-x: -30px; }
+    .closing__word--right { --from-x: 30px; }
+    .closing__word--top { --from-y: -36px; }
+    .success-gate { width: 124px; margin: -10px 0 16px -11px; }
+    .success-gate__mark { width: 28px; height: 28px; }
+    .reading-gate { right: 14px; bottom: 14px; width: 46px; height: 46px; }
+    .reading-gate svg { width: 29px; height: 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tw-cursor { display: none; }
+    .artwork__open { display: none !important; }
+    .film-feature__loop { display: none; }
+    .film-feature__reveal, .process__steps li, .reveal-line > span, .pilot-boundaries li, .closing__word, .finder-piece { transform: none !important; opacity: 1 !important; animation: none !important; }
+  }
+}

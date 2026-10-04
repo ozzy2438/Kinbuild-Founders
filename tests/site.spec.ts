@@ -79,12 +79,12 @@ test('FAQ and privacy disclosure expand with keyboard and pointer', async ({ pag
 
 test('film decodes audio/video, pauses, seeks, captions, replays and stops on close', async ({ page }) => {
   const mediaRequests: string[] = []
-  page.on('request', request => { if (request.url().includes('.mp4')) mediaRequests.push(request.url()) })
+  page.on('request', request => { if (request.url().includes('startbeside-film.mp4')) mediaRequests.push(request.url()) })
   await page.goto('/')
   expect(mediaRequests).toEqual([])
   const watch = page.getByRole('button', { name: 'Watch the film' })
   await watch.click()
-  const video = page.locator('video')
+  const video = page.locator('dialog video')
   await expect(page.getByRole('dialog')).toBeVisible()
   await expect(page.getByRole('button', { name: 'Close the film' })).toBeFocused()
   await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(.5)
@@ -123,8 +123,13 @@ test('film decodes audio/video, pauses, seeks, captions, replays and stops on cl
 })
 
 test('the film is discovered after the opening and only loads when requested', async ({ page }) => {
+  // The full film (with sound) loads only on request; a short silent loop may load near its section.
   const mediaRequests: string[] = []
-  page.on('request', request => { if (request.url().includes('.mp4')) mediaRequests.push(request.url()) })
+  const loopRequests: string[] = []
+  page.on('request', request => {
+    if (request.url().includes('startbeside-film.mp4')) mediaRequests.push(request.url())
+    if (request.url().includes('startbeside-loop.mp4')) loopRequests.push(request.url())
+  })
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/')
@@ -137,13 +142,17 @@ test('the film is discovered after the opening and only loads when requested', a
     await expect(page.locator('.film-feature__reveal')).toHaveCSS('opacity', '1')
     await expect(watch).toBeInViewport()
     expect(mediaRequests).toEqual([])
-    await expect(page.locator('video')).toHaveCount(0)
+    await expect(page.locator('dialog video')).toHaveCount(0)
+    const loop = page.locator('.film-feature__loop')
+    await expect(loop).toHaveAttribute('aria-hidden', 'true')
+    expect(await loop.evaluate(v => (v as HTMLVideoElement).muted)).toBe(true)
   }
+  expect(loopRequests.length).toBeGreaterThan(0)
   const watch = page.getByRole('button', { name: 'Watch the film' })
   await watch.focus()
   await page.keyboard.press('Enter')
   await expect(page.getByRole('dialog')).toBeVisible()
-  await expect.poll(() => page.locator('video').evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(.1)
+  await expect.poll(() => page.locator('dialog video').evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(.1)
   await page.keyboard.press('Escape')
   await expect(watch).toBeFocused()
   await expect(watch).toBeInViewport()
@@ -176,7 +185,8 @@ test('mobile menu reaches the form and all target sizes avoid horizontal overflo
     const artwork = page.locator('.hero .artwork')
     await artwork.scrollIntoViewIfNeeded()
     await expect(artwork).toHaveClass(/artwork--entrance/)
-    await artwork.evaluate(node => Promise.all(node.getAnimations({ subtree: true }).map(animation => animation.finished)))
+    // Wait for the timed entrance; scroll-linked motion has no end to wait for.
+    await artwork.evaluate(node => Promise.all(node.getAnimations({ subtree: true }).filter(animation => animation.timeline === document.timeline).map(animation => animation.finished)))
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `overflow at ${width}px`).toBe(true)
   }
   await page.setViewportSize({ width: 390, height: 844 })
@@ -198,16 +208,24 @@ test('reduced motion keeps artwork visible and suppresses 3D movement', async ({
   await expect(page.locator('.film-feature__reveal')).toHaveCSS('transform', 'none')
 })
 
+// Arrival motion fades text in; check contrast once it has settled, not mid-fade.
+const settle = (page: import('@playwright/test').Page) => page.evaluate(() => Promise.all(document.getAnimations()
+  .filter(animation => animation.timeline === document.timeline && Number.isFinite(Number(animation.effect?.getComputedTiming().endTime)))
+  .map(animation => animation.finished.catch(() => {}))))
+
 test('desktop, mobile, validation and story states pass automated accessibility checks', async ({ page }) => {
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 })
     await page.goto('/')
+    await settle(page)
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()).violations).toEqual([])
   }
   await page.getByRole('button', { name: 'Preview registration' }).click()
+  await settle(page)
   expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()).violations).toEqual([])
   await page.getByRole('button', { name: 'Watch the film' }).click()
   await page.getByRole('button', { name: 'Pause the film' }).click()
+  await settle(page)
   expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()).violations).toEqual([])
 })
 
@@ -235,9 +253,9 @@ test('browser autoplay refusal presents a working explicit play button', async (
   await page.goto('/')
   await page.getByRole('button', { name: 'Watch the film' }).click()
   await expect(page.getByRole('button', { name: 'Play with sound' })).toBeVisible()
-  expect(await page.locator('video').evaluate(v => (v as HTMLVideoElement).paused)).toBe(true)
+  expect(await page.locator('dialog video').evaluate(v => (v as HTMLVideoElement).paused)).toBe(true)
   await page.getByRole('button', { name: 'Play with sound' }).click()
-  await expect.poll(() => page.locator('video').evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(.5)
+  await expect.poll(() => page.locator('dialog video').evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(.5)
   await expect(page.getByRole('button', { name: 'Play with sound' })).not.toBeVisible()
 })
 

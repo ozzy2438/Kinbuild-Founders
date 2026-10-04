@@ -5,6 +5,9 @@ import { registration } from '../registration'
 import { availability, seekingOptions, weeklyHours, workingStyles } from '../content/roles'
 import type { Preset } from '../content/roles'
 
+// The three real stones; literal paths so the standalone build can inline them.
+const stones = { left: '/images/arch-left.webp', right: '/images/arch-right.webp', top: '/images/arch-top.webp' }
+
 type TextField = 'name' | 'email' | 'sector' | 'skill' | 'style' | 'hours'
 type Values = Record<TextField, string> & { seeking: string[]; days: string[] }
 type FieldName = keyof Values
@@ -110,7 +113,11 @@ export default function InterestForm({ onPrivacy, preset }: { onPrivacy: () => v
   const firstName = values.name.trim().split(/\s+/)[0]
 
   return completed ? <div className="form-success" ref={confirmation} tabIndex={-1} role="status">
-    <span className="success-mark"><CheckIcon size={29} weight="light" /></span>
+    {/* The page's gateway completes here: left block, right column, then the beam. */}
+    <span className="success-gate" aria-hidden="true">
+      {(['left', 'right', 'top'] as const).map(piece => <img key={piece} className={`success-gate__stone success-gate__stone--${piece}`} src={stones[piece]} alt="" width="1000" height="1000" decoding="async" draggable="false" />)}
+      <span className="success-gate__mark"><CheckIcon size={16} weight="bold" /></span>
+    </span>
     <span className="eyebrow">{registration.enabled ? 'INTEREST RECEIVED' : 'REGISTRATION PREVIEW'}</span>
     <h3>{registration.enabled ? 'Thanks for raising your hand.' : 'That’s the first step.'}</h3>
     <p>{registration.enabled ? `Thanks, ${firstName}. We’ve received your interest. We’ll review your details and get in touch about a short conversation if there’s a potential fit.` : `Thanks for trying it, ${firstName}. In the live pilot, we’ll use these details to help shape a group with complementary strengths.`}</p>

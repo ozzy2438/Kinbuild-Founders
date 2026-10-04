@@ -1,16 +1,26 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { Fragment, lazy, Suspense, useEffect, useState } from 'react'
+import type { CSSProperties } from 'react'
 import { ArrowDownIcon, ArrowUpRightIcon, CaretDownIcon, ListIcon, UsersThreeIcon, XIcon } from '@phosphor-icons/react'
 import { Artwork } from './components/Artwork'
 import FilmFeature from './components/FilmFeature'
+import HeroHeadline from './components/HeroHeadline'
+import Logo from './components/Logo'
 import InterestForm from './components/InterestForm'
 import PieceFinder from './components/PieceFinder'
 import ProcessSteps from './components/ProcessSteps'
 import Organiser from './components/Organiser'
+import ReadingGate from './components/ReadingGate'
+import { useEntrance } from './hooks/useEntrance'
 import { registration } from './registration'
 import { roles, roleFor } from './content/roles'
 import type { Preset, RoleId } from './content/roles'
 
 const StoryDialog = lazy(() => import('./components/StoryDialog'))
+// The closing words gather like the stones: from the left, from above and from the right.
+const closingLines: [string, 'left' | 'top' | 'right'][][] = [
+  [['You', 'left'], ['don’t', 'left'], ['have', 'top'], ['to', 'right'], ['figure', 'right']],
+  [['it', 'left'], ['all', 'top'], ['out', 'top'], ['alone.', 'right']],
+]
 const questions = [
   ['Do I need a startup idea already?', 'No. Bring a skill, a perspective, or a problem you care about. You can explore an idea with other people. You do need a willingness to contribute and follow through.'],
   ['Is this just another networking event?', 'No. It goes beyond introductions. The pilot is designed around complementary skills and a short, practical working experience, so you learn what collaboration actually feels like.'],
@@ -29,6 +39,9 @@ function App() {
   const [storyLoaded, setStoryLoaded] = useState(false)
   const [privacyOpen, setPrivacyOpen] = useState(false)
   const [preset, setPreset] = useState<Preset | null>(null)
+  const pilotTitle = useEntrance<HTMLHeadingElement>(.5)
+  const boundaries = useEntrance<HTMLUListElement>(.6)
+  const closing = useEntrance<HTMLParagraphElement>(.45)
 
   useEffect(() => {
     const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setMenuOpen(false) }
@@ -48,7 +61,7 @@ function App() {
   return <>
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="site-header shell">
-      <a className="wordmark" href="#" aria-label="StartBeside home">StartBeside</a>
+      <a className="wordmark" href="#" aria-label="StartBeside home"><Logo assemble /></a>
       <nav aria-label="Main navigation" className="desktop-nav"><a href="#your-piece">Your piece</a><a href="#how-it-works">How it works</a><a href="#the-pilot">The pilot</a><a href="#about">About</a><a className="button button--small" href="#register">Register interest <ArrowUpRightIcon size={17} /></a></nav>
       <button className="icon-button menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="mobile-nav" onClick={() => setMenuOpen(value => !value)}>{menuOpen ? <XIcon size={25} /> : <ListIcon size={26} />}</button>
       <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation" hidden={!menuOpen}>{[['Your piece', '#your-piece'], ['How it works', '#how-it-works'], ['The pilot', '#the-pilot'], ['About', '#about'], ['Register interest', '#register']].map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}<ArrowUpRightIcon size={18} /></a>)}</nav>
@@ -58,8 +71,7 @@ function App() {
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="hero__copy">
           <p className="eyebrow hero__eyebrow">MELBOURNE · FOUNDING PILOT</p>
-          <h1 id="hero-title"><span>Don’t build</span><span>alone<span className="accent-dot">.</span></span></h1>
-          <p className="hero__lead">Meet people in Melbourne. Test a startup idea together. See if you’re a team.</p>
+          <HeroHeadline />
           <p className="hero__description">A Melbourne pilot for future co-founders. Start alongside work or study; go further when the evidence says so.</p>
           <p className="hero__match"><UsersThreeIcon size={25} weight="light" aria-hidden="true" /><span>Matched by skills, sector and how you like to work.</span></p>
           <div className="hero__actions"><a href="#register" className="button">Register your interest <ArrowUpRightIcon size={19} /></a><a href="#how-it-works" className="quiet-link">See how it works <ArrowDownIcon size={16} /></a></div>
@@ -84,7 +96,7 @@ function App() {
 
       <section id="the-pilot" className="pilot" aria-labelledby="pilot-title">
         <div className="shell">
-          <div className="pilot__inner"><div><p className="eyebrow">THE MELBOURNE PILOT</p><h2 id="pilot-title">A first meeting.<br />A possible beginning.</h2><p className="pilot__body">A small, guided beginning that fits around work or study: meet people, choose who you’d like to work with and spend 14 days on one small project together before deciding what comes next.</p><div className="pilot__actions"><a href="#register" className="button button--light">Register your interest <ArrowUpRightIcon size={19} /></a><p>In person · Melbourne · 4–6 hours a week</p></div></div><span className="pilot__aside">Start small.<br />Think further.</span></div>
+          <div className="pilot__inner"><div><p className="eyebrow">THE MELBOURNE PILOT</p><h2 id="pilot-title" ref={pilotTitle.ref} className={pilotTitle.entered ? 'is-revealed' : undefined}><span className="reveal-line"><span>A first meeting.</span></span><span className="reveal-line"><span>A possible beginning.</span></span></h2><p className="pilot__body">A small, guided beginning that fits around work or study: meet people, choose who you’d like to work with and spend 14 days on one small project together before deciding what comes next.</p><div className="pilot__actions"><a href="#register" className="button button--light">Register your interest <ArrowUpRightIcon size={19} /></a><p>In person · Melbourne · 4–6 hours a week</p></div></div><span className="pilot__aside">Start small.<br />Think further.</span></div>
           <div className="pilot-overview" aria-labelledby="pilot-overview-title">
             <div className="pilot-overview__heading"><h3 id="pilot-overview-title">Pilot at a glance</h3><p>Planned format</p></div>
             <dl className="pilot-overview__details">
@@ -94,7 +106,7 @@ function App() {
               <div><dt>What you’ll bring</dt><dd>4–6 hours a week, a contribution to the shared goal and a willingness to follow through. We’ll discuss availability before any invitation.</dd></div>
               <div><dt>What you’ll leave with</dt><dd>Evidence on four questions: can we work together, is the problem real, is it worth continuing, and if so, what’s the most sensible next step? Finding out early that something isn’t right is a good outcome too.</dd></div>
             </dl>
-            <ul className="pilot-boundaries" aria-label="Pilot boundaries"><li>Keep your job or studies</li><li>No company required</li><li>No equity taken</li><li>No funding promised</li></ul>
+            <ul ref={boundaries.ref} className={`pilot-boundaries ${boundaries.entered ? 'is-revealed' : ''}`} aria-label="Pilot boundaries">{['Keep your job or studies', 'No company required', 'No equity taken', 'No funding promised'].map((item, i) => <li key={item} style={{ '--i': i } as CSSProperties}>{item}</li>)}</ul>
             <p className="pilot-overview__note">The date, venue and any cost will be confirmed before you’re asked to commit.</p>
           </div>
         </div>
@@ -129,9 +141,9 @@ function App() {
         </div>
       </section>
 
-      <section className="closing shell" aria-label="Closing note"><p>You don’t have to figure<br />it all out alone.</p><a href="#register" className="closing__link" aria-label="Go to registration"><ArrowUpRightIcon size={54} weight="light" /></a></section>
+      <section className="closing shell" aria-label="Closing note"><p ref={closing.ref} className={closing.entered ? 'is-gathered' : undefined}>{closingLines.map((line, l) => <Fragment key={l}>{l > 0 && <br />}{line.map(([word, from], i) => <Fragment key={word}>{i > 0 && ' '}<span className={`closing__word closing__word--${from}`} style={{ '--i': closingLines.slice(0, l).flat().length + i } as CSSProperties}>{word}</span></Fragment>)}</Fragment>)}</p><a href="#register" className="closing__link" aria-label="Go to registration"><ArrowUpRightIcon size={54} weight="light" /></a></section>
     </main>
-    <footer className="site-footer shell"><a className="wordmark" href="#" aria-label="StartBeside home">StartBeside</a><span>Built around people. Melbourne.</span>{registration.contactEmail && <a className="footer-contact" href={`mailto:${registration.contactEmail}`}>{registration.contactEmail}</a>}<button className="text-button" aria-expanded={privacyOpen} aria-controls="privacy-content" onClick={() => setPrivacyOpen(value => !value)}>Privacy <ArrowUpRightIcon size={15} /></button></footer>
+    <footer className="site-footer shell"><a className="wordmark" href="#" aria-label="StartBeside home"><Logo /></a><span>Built around people. Melbourne.</span>{registration.contactEmail && <a className="footer-contact" href={`mailto:${registration.contactEmail}`}>{registration.contactEmail}</a>}<button className="text-button" aria-expanded={privacyOpen} aria-controls="privacy-content" onClick={() => setPrivacyOpen(value => !value)}>Privacy <ArrowUpRightIcon size={15} /></button></footer>
     <section id="privacy" className="privacy shell" aria-labelledby="privacy-title">
       <details id="privacy-content" open={privacyOpen} onToggle={event => setPrivacyOpen(event.currentTarget.open)}>
         <summary id="privacy-title">Your details, treated with care.<CaretDownIcon size={18} /></summary>
@@ -147,6 +159,7 @@ function App() {
         </div>
       </details><p className="footer-small">StartBeside · A shared beginning.</p>
     </section>
+    <ReadingGate />
     {storyLoaded && <Suspense fallback={<div className="story-loading" role="status">Opening the film…</div>}><StoryDialog open={storyOpen} onClose={() => setStoryOpen(false)} /></Suspense>}
   </>
 }

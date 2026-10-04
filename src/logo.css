@@ -1,0 +1,28 @@
+/* The StartBeside logo: mark + wordmark. Only transform and opacity move. */
+@layer components {
+  .wordmark { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--heading); font-weight: 750; letter-spacing: -.035em; }
+  .logo { display: inline-flex; align-items: center; gap: .3em; line-height: 1; }
+  .logo-mark { width: 1.12em; height: 1.12em; margin-top: -.06em; flex-shrink: 0; overflow: visible; }
+  .logo-mark__half { fill: currentColor; transform-box: fill-box; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  .logo-mark__dot { fill: var(--logo-dot, var(--accent)); transform-box: fill-box; transform-origin: 50% 100%; }
+  .logo-mark__dot-wrap { transform-box: fill-box; transform-origin: center; }
+
+  /* Arrival, once: the halves slide in from either side and meet; then the dot lands. */
+  .logo--assemble .logo-mark__half--left { animation: logo-half-left .75s cubic-bezier(.2,.8,.2,1) .2s both; }
+  .logo--assemble .logo-mark__half--right { animation: logo-half-right .75s cubic-bezier(.2,.8,.2,1) .2s both; }
+  .logo--assemble .logo-mark__dot-wrap { animation: logo-dot-in .5s cubic-bezier(.34,1.56,.64,1) .85s both; }
+
+  /* Hover: you step in — the dot gives a small hop. */
+  a:hover > .logo .logo-mark__dot, a:focus-visible > .logo .logo-mark__dot { animation: logo-dot-hop .55s cubic-bezier(.3,.7,.4,1); }
+}
+
+@keyframes logo-half-left { from { opacity: 0; transform: translateX(-34%); } }
+@keyframes logo-half-right { from { opacity: 0; transform: translateX(34%); } }
+@keyframes logo-dot-in { from { opacity: 0; transform: scale(0); } }
+@keyframes logo-dot-hop { 0%, 100% { transform: none; } 35% { transform: translateY(-55%) scaleY(1.06); } 65% { transform: translateY(0) scale(1.12, .88); } }
+
+@layer responsive {
+  @media (prefers-reduced-motion: reduce) {
+    .logo-mark__half, .logo-mark__dot, .logo-mark__dot-wrap { animation: none !important; transform: none !important; opacity: 1 !important; }
+  }
+}
